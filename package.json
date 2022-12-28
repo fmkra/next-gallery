@@ -3,13 +3,13 @@
     "version": "1.0.0",
     "private": false,
     "description": "Next.js component for creating responsive image gallery",
-    "source": "src/pages/index.tsx",
+    "source": "src/index.tsx",
     "main": "dist/index.js",
     "module": "dist/index.esm.js",
     "types": "dist/index.d.ts",
     "sideEffects": false,
     "publishConfig": {
-        "source": "src/pages/index.tsx",
+        "source": "src/index.tsx",
         "main": "dist/index.js"
     },
     "scripts": {
@@ -17,11 +17,8 @@
         "build": "next build",
         "lint": "next lint",
         "start": "next start",
-        "watch": "microbundle --watch",
-        "build:package": "microbundle --jsx React.createElement --compress --visualize --tsconfig tsconfig.json ",
-        "prepare": "rm -rf dist && rm -rf .next && yarn build:package",
-        "pack-size": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz ",
-        "publish": "np --no-tests"
+        "prepare": "rm -rf dist && rm -rf .next && npm run build:package",
+        "build:package": "microbundle --compress --jsx React.createElement --jsxFragment React.Fragment --jsxImportSource react --globals react/jsx-runtime=jsx"
     },
     "files": [
         "dist",
@@ -32,16 +29,14 @@
         "type": "git",
         "url": "git+https://github.com/kotmawszy/next-gallery.git"
     },
-    "keywords": [
-
-    ],
+    "keywords": [],
     "author": "Filip Krawczyk <kontakt@fkrawczyk.pl>",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/kotmawszy/next-gallery/issues"
     },
     "peerDependencies": {
-        "next": ">= 10.0.0",
+        "next": ">= 13.1.1",
         "react": ">=  17.0.2",
         "react-dom": ">= 17.0.2"
     },
@@ -51,10 +46,13 @@
         "eslint": "^8.20.0",
         "eslint-config-next": "^12.2.3",
         "microbundle": "^0.15.0",
-        "next": "^12.2.3",
+        "next": "^13.1.1",
         "np": "^7.6.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "typescript": "^4.7.4"
+    },
+    "dependencies": {
+        "microbundle-crl": "^0.13.11"
     }
 }

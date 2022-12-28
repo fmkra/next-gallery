@@ -8,7 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "rootDir": "./src/pages",
+    "rootDir": "src",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
