@@ -3,34 +3,42 @@ import Image, { ImageLoader } from 'next/image'
 import useWindowWidth from './useWindowWidth'
 
 
-export interface ImageInterface<ImgNameT> {
+export interface ImageT {
     src: string
     aspect_ratio: number
     alt?: string
-    name: ImgNameT
 }
 
-export interface GalleryProps<ImgNameT, StateT> {
-    images: ImageInterface<ImgNameT>[]
+export interface NamedImageT<NameT> extends ImageT {
+    name: NameT
+}
+
+export type GalleryProps<NameT, StateT> = {
     widths: number[]
     ratios: number[]
     percentVw?: number
     margin?: string
-    overlay?: (name: ImgNameT, state: StateT, setState: Dispatch<SetStateAction<StateT>>) => ReactElement
     initState?: StateT
-    imgLoader?: ImageLoader
-}
+    imgLoader?: ImageLoader,
+} & ({
+    images: NamedImageT<NameT>[]
+    overlay: (name: NameT, state: StateT, setState: Dispatch<SetStateAction<StateT>>) => ReactElement
+}|{
+    images: ImageT[]
+    overlay?: undefined
+})
 
-export function Gallery<ImgNameT, StateT>({
+export function Gallery<NameT, StateT>({
     images,
     widths,
     ratios,
     percentVw = 100,
     margin = '2px',
-    overlay,
     initState,
-    imgLoader
-}: GalleryProps<ImgNameT, StateT>) {
+    imgLoader,
+    overlay,
+}: GalleryProps<NameT, StateT>) {
+
     const [state, setState] = useState<StateT[]>(new Array(images.length).fill(initState))
 
     const sizes = useMemo(() => ratios.map(ratio => {
@@ -94,7 +102,7 @@ export function Gallery<ImgNameT, StateT>({
                                 bottom: 0,
                             }}>
                                 {Math.floor(width*sizes[sizeLevel][index]/100)}
-                                {overlay(image.name, state[index], arg => {
+                                {overlay((image as NamedImageT<NameT>).name, state[index], arg => {
                                     if(arg instanceof Function) setState(state.map((value, i) => i === index ? arg(value) : value))
                                     else setState(state.map((value, i) => i === index ? arg : value))
                                 })}
