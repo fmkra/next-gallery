@@ -1,64 +1,60 @@
 {
-  "name": "next-libs",
-  "version": "1.3.0",
-  "private": false,
-  "description": "Next.js library template with typescript",
-  "source": "src/pages/index.tsx",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "sideEffects": false,
-  "publishConfig": {
+    "name": "next-gallery",
+    "version": "1.0.0",
+    "private": false,
+    "description": "Next.js component for creating responsive image gallery",
     "source": "src/pages/index.tsx",
-    "main": "dist/index.js"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "lint": "next lint",
-    "start": "next start",
-    "watch": "microbundle --watch",
-    "build:package": "microbundle --jsx React.createElement --compress --visualize --tsconfig tsconfig.json ",
-    "prepare": "rm -rf dist && rm -rf .next && yarn build:package",
-    "pack-size": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz ",
-    "publish": "np --no-tests"
-  },
-  "files": [
-    "dist",
-    "README.md"
-  ],
-  "exports": "./dist/index.modern.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Mzaien/next-libs.git"
-  },
-  "keywords": [
-    "next",
-    "next.js",
-    "react",
-    "lib",
-    "template"
-  ],
-  "author": "Abdullah Mzaien <awmzaien@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Mzaien/Next-lib-template/issues"
-  },
-  "peerDependencies": {
-    "next": ">= 10.0.0",
-    "react": ">=  17.0.2",
-    "react-dom": ">= 17.0.2"
-  },
-  "devDependencies": {
-    "@types/node": "^18.0.6",
-    "@types/react": "^18.0.15",
-    "eslint": "^8.20.0",
-    "eslint-config-next": "^12.2.3",
-    "microbundle": "^0.15.0",
-    "next": "^12.2.3",
-    "np": "^7.6.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^4.7.4"
-  }
+    "main": "dist/index.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
+    "sideEffects": false,
+    "publishConfig": {
+        "source": "src/pages/index.tsx",
+        "main": "dist/index.js"
+    },
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "lint": "next lint",
+        "start": "next start",
+        "watch": "microbundle --watch",
+        "build:package": "microbundle --jsx React.createElement --compress --visualize --tsconfig tsconfig.json ",
+        "prepare": "rm -rf dist && rm -rf .next && yarn build:package",
+        "pack-size": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz ",
+        "publish": "np --no-tests"
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "exports": "./dist/index.modern.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kotmawszy/next-gallery.git"
+    },
+    "keywords": [
+
+    ],
+    "author": "Filip Krawczyk <kontakt@fkrawczyk.pl>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/kotmawszy/next-gallery/issues"
+    },
+    "peerDependencies": {
+        "next": ">= 10.0.0",
+        "react": ">=  17.0.2",
+        "react-dom": ">= 17.0.2"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.6",
+        "@types/react": "^18.0.15",
+        "eslint": "^8.20.0",
+        "eslint-config-next": "^12.2.3",
+        "microbundle": "^0.15.0",
+        "next": "^12.2.3",
+        "np": "^7.6.2",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "^4.7.4"
+    }
 }
