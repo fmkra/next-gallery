@@ -21,7 +21,7 @@ export interface GalleryProps<ImgNameT, StateT> {
     imgLoader?: ImageLoader
 }
 
-export function Gallery<ImgNameT, StateT>({ images, widths, ratios, margin, overlay, initState, imgLoader }: GalleryProps<ImgNameT, StateT>) {
+export function Gallery<ImgNameT, StateT>({ images, widths, ratios, margin, overlay, initState, imgLoader, percentVw }: GalleryProps<ImgNameT, StateT>) {
     const [state, setState] = useState<StateT[]>(new Array(images.length).fill(initState))
 
     const sizes = useMemo(() => ratios.map(ratio => {
@@ -75,7 +75,7 @@ export function Gallery<ImgNameT, StateT>({ images, widths, ratios, margin, over
                         right: margin??2 + 'px',
                         bottom: margin??2 + 'px',
                     }}>
-                        <Image src={image.src} alt={image.alt??''} fill loader={imgLoader} sizes={widths.map((width, i) => `(max-width: ${width}px) ${sizes[i][index]}vw`).join(', ')+`, ${sizes[widths.length-1][index]}`} />
+                        <Image src={image.src} alt={image.alt??''} fill loader={imgLoader} sizes={widths.map((width, i) => `(max-width: ${width}px) ${(percentVw??100)/100*sizes[i][index]}vw`).join(', ')+`, ${sizes[widths.length-1][index]}`} />
                         {overlay ? (
                             <div style={{
                                 position: 'absolute',
