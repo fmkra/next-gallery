@@ -8,7 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "rootDir": "src",
+    "rootDir": "./src",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -25,6 +25,7 @@
     "types"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    //"src/stories"
   ]
 }
