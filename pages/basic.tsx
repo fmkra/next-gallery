@@ -1,5 +1,5 @@
 import React from 'react'
-import {Gallery} from '../Gallery'
+import { Gallery } from '../src'
 
 const images = [
     { src: "https://picsum.photos/id/1018/1920/1080/", aspect_ratio: 16/9, name: 1 },
@@ -28,18 +28,6 @@ const ratios = [ 2.2, 4, 6, 8 ]
 
 export default function() {
     return (<>
-        <Gallery initState={false} images={images} widths={widths} ratios={ratios} margin="2px" overlay={(data, state, setState) => (
-            <div style={{
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                color: 'white',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                {data}
-                {state ? 'true' : 'false'}
-                <button onClick={() => setState(!state)}>Toggle</button>
-            </div>
-        )} />
+        <Gallery initState={false} images={images} widths={widths} ratios={ratios} />
     </>)
 }
