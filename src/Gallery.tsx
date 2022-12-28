@@ -1,6 +1,6 @@
 import { useState, useMemo, Dispatch, SetStateAction, ReactElement } from 'react'
 import Image, { ImageLoader } from 'next/image'
-import useWindowWidth from './useWindowWidth';
+import useWindowWidth from './useWindowWidth'
 
 
 export interface ImageInterface<ImgNameT> {
@@ -21,7 +21,16 @@ export interface GalleryProps<ImgNameT, StateT> {
     imgLoader?: ImageLoader
 }
 
-export function Gallery<ImgNameT, StateT>({ images, widths, ratios, margin, overlay, initState, imgLoader, percentVw }: GalleryProps<ImgNameT, StateT>) {
+export function Gallery<ImgNameT, StateT>({
+    images,
+    widths,
+    ratios,
+    percentVw = 100,
+    margin = '2px',
+    overlay,
+    initState,
+    imgLoader
+}: GalleryProps<ImgNameT, StateT>) {
     const [state, setState] = useState<StateT[]>(new Array(images.length).fill(initState))
 
     const sizes = useMemo(() => ratios.map(ratio => {
@@ -51,7 +60,7 @@ export function Gallery<ImgNameT, StateT>({ images, widths, ratios, margin, over
         return index === -1 ? ratios.length - 1 : index
     }, [width, widths, ratios])
 
-    if (sizeLevel === null) return null
+    if (width == null || sizeLevel === null) return null
 
     return (
         <div style={{
@@ -70,12 +79,12 @@ export function Gallery<ImgNameT, StateT>({ images, widths, ratios, margin, over
                 }}>
                     <div style={{
                         position: 'absolute',
-                        top: margin??2 + 'px',
-                        left: margin??2 + 'px',
-                        right: margin??2 + 'px',
-                        bottom: margin??2 + 'px',
+                        top: margin + 'px',
+                        left: margin + 'px',
+                        right: margin + 'px',
+                        bottom: margin + 'px',
                     }}>
-                        <Image src={image.src} alt={image.alt??''} fill loader={imgLoader} sizes={widths.map((width, i) => `(max-width: ${width}px) ${(percentVw??100)/100*sizes[i][index]}vw`).join(', ')+`, ${sizes[widths.length-1][index]}`} />
+                        <Image src={image.src} alt={image.alt??''} fill loader={imgLoader} sizes={widths.map((width, i) => `(max-width: ${width}px) ${percentVw/100*sizes[i][index]}vw`).join(', ')+`, ${sizes[widths.length-1][index]}`} />
                         {overlay ? (
                             <div style={{
                                 position: 'absolute',
@@ -84,7 +93,7 @@ export function Gallery<ImgNameT, StateT>({ images, widths, ratios, margin, over
                                 right: 0,
                                 bottom: 0,
                             }}>
-                                {Math.floor((width??0)*sizes[sizeLevel][index]/100)}
+                                {Math.floor(width*sizes[sizeLevel][index]/100)}
                                 {overlay(image.name, state[index], arg => {
                                     if(arg instanceof Function) setState(state.map((value, i) => i === index ? arg(value) : value))
                                     else setState(state.map((value, i) => i === index ? arg : value))
