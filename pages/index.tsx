@@ -6,6 +6,10 @@ export default function() {
         <div>
             <h1>Examples</h1>
             <Link href="/basic">Basic</Link>
+            <br />
+            <Link href="/name_mixing">Name Type Mixing</Link>
+            <br />
+            <Link href="/selectable">Selectable</Link>
         </div>
     )
 }
