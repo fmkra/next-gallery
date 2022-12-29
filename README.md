@@ -41,6 +41,7 @@ More examples in [pages](pages) folder.
 - `percentVw` (default: 100) - percent of viewport width that gallery takes (used for image optimization)
 - `margin` (default: `"2px"`) - margin between images, needs to be valid css value (e.g. `"2px"`, `"2rem"`, etc.)
 - `initState` (optional) - every images keeps its own state, which can be read by overlay, this is initial state for every image (can be used e.g. for selecting images)
+- `imgLoader` (default: next default loader) - image loader, see [next/image](https://nextjs.org/docs/api-reference/next/image#loader)
 - `overlay` (optional) - NOTE: this property can be passed only if every image has `name` property. It is a function that takes image name, state, setState and returns React component that will be rendered as overlay for every image. Overlay can be used e.g. for displaying image name or for selecting images (see example below).
 ```tsx
 const images: NamedImage<string>[] = [
@@ -61,5 +62,4 @@ const images: NamedImage<string|number>[] = [
     { src: "https://picsum.photos/id/1018/1920/1080/", aspect_ratio: 16/9, name: "image1" },
     { src: "https://picsum.photos/id/1015/1920/1080/", aspect_ratio: 16/9, name: 2 },
 ]
-
-    
+```
