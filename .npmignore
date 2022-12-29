@@ -4,5 +4,9 @@ node_modules
 .cache
 *.lock
 .next
-src
 .yarnclean
+pages
+.eslintrc
+.gitignore
+next-env.d.ts
+next.config.js

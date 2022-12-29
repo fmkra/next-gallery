@@ -18,15 +18,13 @@
         "lint": "next lint",
         "start": "next start",
         "prepare": "rm -rf dist && rm -rf .next && npm run build:package",
-        "build:package": "microbundle -f modern --compress=false",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
+        "build:package": "microbundle -f modern --compress=false"
     },
     "files": [
         "dist",
         "README.md"
     ],
-    "exports": "./dist/index.modern.js",
+    "exports": "./dist/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/kotmawszy/next-gallery.git"
