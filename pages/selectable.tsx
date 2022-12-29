@@ -7,6 +7,7 @@ const MyOverlay = ({selected, onClick}: {selected: boolean, onClick: () => void}
     left: 0,
     right: 0,
     bottom: 0,
+    transition: 'background-color 0.3s',
     backgroundColor: selected ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0)',
 }} onClick={onClick}></div>
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import { Gallery, NamedImage } from '../src'
 
+const styles: React.CSSProperties = {color: '#fff', background: 'rgba(0,0,0,0.5)', margin: '0', textAlign: 'center', padding: '0.5rem'}
+
 const images: NamedImage<string|number>[] = [
     { src: "https://picsum.photos/id/1018/1920/1080/", aspect_ratio: 16/9, name: "image1" },
     { src: "https://picsum.photos/id/1015/1920/1080/", aspect_ratio: 16/9, name: "image2" },
@@ -26,5 +28,5 @@ const widths = [ 500, 1000, 1600 ]
 const ratios = [ 2.2, 4, 6, 8 ]
 
 export default function() {
-    return <Gallery overlay={(name) => <p>{name}</p>} initState={false} images={images} widths={widths} ratios={ratios} />
+    return <Gallery overlay={(name) => <p style={styles}>{name}</p>} initState={false} images={images} widths={widths} ratios={ratios} />
 }
