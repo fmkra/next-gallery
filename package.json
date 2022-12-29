@@ -29,7 +29,7 @@
         "type": "git",
         "url": "git+https://github.com/fmkra/next-gallery.git"
     },
-    "keywords": [],
+    "keywords": ["nextjs", "images", "react"],
     "author": "Filip Krawczyk <kontakt@fkrawczyk.pl>",
     "license": "MIT",
     "bugs": {
