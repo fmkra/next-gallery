@@ -1,5 +1,8 @@
 # next-gallery
 
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)]()
+[![npm version](https://img.shields.io/badge/npm-v1.0.0-brightgreen)](https://www.npmjs.com/package/next-gallery)
+
 Next.js component for creating responsive image gallery
 
 
@@ -11,8 +14,8 @@ Next.js component for creating responsive image gallery
 import Gallery from "next-gallery"
 
 const images = [
-    { src: "https://picsum.photos/id/1018/1920/1080/", aspect_ratio: 16/9, },
-    { src: "https://picsum.photos/id/1015/1920/1080/", aspect_ratio: 16/9, },
+    { src: "https://picsum.photos/id/1018/1920/1080/", aspect_ratio: 16/9 },
+    { src: "https://picsum.photos/id/1015/1920/1080/", aspect_ratio: 16/9 },
     ...
 ]
 const widths = [ 500, 1000, 1600 ]
