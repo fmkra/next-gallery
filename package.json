@@ -18,7 +18,7 @@
         "lint": "next lint",
         "start": "next start",
         "prepare": "rm -rf dist && rm -rf .next && npm run build:package",
-        "build:package": "microbundle -f modern --compress=false"
+        "build:package": "microbundle -f modern,esm --compress=false --jsx React.createElement --jsxFragment React.Fragment --jsxImportSource react --globals react/jsx-runtime=jsx"
     },
     "files": [
         "dist",
