@@ -10,3 +10,4 @@ pages
 .gitignore
 next-env.d.ts
 next.config.js
+assets

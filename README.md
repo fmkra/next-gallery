@@ -8,7 +8,13 @@ Next.js component for creating responsive image gallery
 
 ![Example on desktop](assets/example_3.png?raw=true)
 
-## Example
+## Installation
+
+```bash
+npm install next-gallery
+```
+
+## Usage
 
 ```tsx
 import Gallery from "next-gallery"
@@ -21,14 +27,14 @@ const images = [
 const widths = [ 500, 1000, 1600 ]
 const ratios = [ 2.2, 4, 6, 8 ]
 
-export default function Home() {
+export default function MyGallery() {
     return (
         <Gallery {...{images, widths, ratios}} />
     )
 }
 ```
 
-NOTE: If you are using Next.js's app directory, you must mark page or component which uses `Gallery` with `use client`;
+NOTE: If you are using Next.js app directory, you must mark page or component which uses `Gallery` with `use client`;
 
 More examples in [pages](pages) folder.
 
