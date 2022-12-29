@@ -27,13 +27,13 @@
     "exports": "./dist/index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/kotmawszy/next-gallery.git"
+        "url": "git+https://github.com/fmkra/next-gallery.git"
     },
     "keywords": [],
     "author": "Filip Krawczyk <kontakt@fkrawczyk.pl>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/kotmawszy/next-gallery/issues"
+        "url": "https://github.com/fmkra/next-gallery/issues"
     },
     "peerDependencies": {
         "next": ">= 13.1.1",
