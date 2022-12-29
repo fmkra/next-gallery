@@ -3,13 +3,13 @@ import Image, { ImageLoader } from 'next/image'
 import useWindowWidth from './useWindowWidth'
 
 
-export interface ImageT {
+export interface Image {
     src: string
     aspect_ratio: number
     alt?: string
 }
 
-export interface NamedImageT<NameT> extends ImageT {
+export interface NamedImage<NameT> extends Image {
     name: NameT
 }
 
@@ -21,10 +21,10 @@ export type GalleryProps<NameT, StateT> = {
     initState?: StateT
     imgLoader?: ImageLoader,
 } & ({
-    images: NamedImageT<NameT>[]
+    images: NamedImage<NameT>[]
     overlay: (name: NameT, state: StateT, setState: Dispatch<SetStateAction<StateT>>) => ReactElement
 }|{
-    images: ImageT[]
+    images: Image[]
     overlay?: undefined
 })
 
@@ -87,10 +87,10 @@ export function Gallery<NameT, StateT>({
                 }}>
                     <div style={{
                         position: 'absolute',
-                        top: margin + 'px',
-                        left: margin + 'px',
-                        right: margin + 'px',
-                        bottom: margin + 'px',
+                        top: margin,
+                        left: margin,
+                        right: margin,
+                        bottom: margin,
                     }}>
                         <Image src={image.src} alt={image.alt??''} fill loader={imgLoader} sizes={widths.map((width, i) => `(max-width: ${width}px) ${percentVw/100*sizes[i][index]}vw`).join(', ')+`, ${sizes[widths.length-1][index]}`} />
                         {overlay ? (
@@ -101,8 +101,7 @@ export function Gallery<NameT, StateT>({
                                 right: 0,
                                 bottom: 0,
                             }}>
-                                {Math.floor(width*sizes[sizeLevel][index]/100)}
-                                {overlay((image as NamedImageT<NameT>).name, state[index], arg => {
+                                {overlay((image as NamedImage<NameT>).name, state[index], arg => {
                                     if(arg instanceof Function) setState(state.map((value, i) => i === index ? arg(value) : value))
                                     else setState(state.map((value, i) => i === index ? arg : value))
                                 })}

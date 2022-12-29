@@ -1,5 +1,2 @@
-'use client';
-
-import { Gallery } from './Gallery'
-
-export {Gallery}
+export { Gallery } from './Gallery'
+export type { Image, NamedImage, GalleryProps } from './Gallery'
