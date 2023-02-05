@@ -94,7 +94,7 @@ function Gallery(_ref) {
             loader: imgLoader,
             sizes: widths.map(function (width, i) {
               return "(max-width: " + width + "px) " + percentVw / 100 * sizes[i][index] + "vw";
-            }).join(', ') + (", " + sizes[widths.length - 1][index])
+            }).join(', ') + (", " + percentVw / 100 * sizes[sizes.length - 1][index] + "vw")
           }), overlay ? /*#__PURE__*/jsx("div", {
             style: {
               position: 'absolute',

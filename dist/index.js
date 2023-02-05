@@ -79,7 +79,7 @@ function Gallery({
             alt: (_image$alt = image.alt) != null ? _image$alt : '',
             fill: true,
             loader: imgLoader,
-            sizes: widths.map((width, i) => `(max-width: ${width}px) ${percentVw / 100 * sizes[i][index]}vw`).join(', ') + `, ${sizes[widths.length - 1][index]}`
+            sizes: widths.map((width, i) => `(max-width: ${width}px) ${percentVw / 100 * sizes[i][index]}vw`).join(', ') + `, ${percentVw / 100 * sizes[sizes.length - 1][index]}vw`
           }), overlay ? /*#__PURE__*/jsx("div", {
             style: {
               position: 'absolute',
