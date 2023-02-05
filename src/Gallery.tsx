@@ -92,7 +92,7 @@ export function Gallery<NameT, StateT>({
                         right: margin,
                         bottom: margin,
                     }}>
-                        <Image src={image.src} alt={image.alt??''} fill loader={imgLoader} sizes={widths.map((width, i) => `(max-width: ${width}px) ${percentVw/100*sizes[i][index]}vw`).join(', ')+`, ${sizes[widths.length-1][index]}`} />
+                        <Image src={image.src} alt={image.alt??''} fill loader={imgLoader} sizes={widths.map((width, i) => `(max-width: ${width}px) ${percentVw/100*sizes[i][index]}vw`).join(', ')+`, ${percentVw/100*sizes[sizes.length-1][index]}vw`} />
                         {overlay ? (
                             <div style={{
                                 position: 'absolute',

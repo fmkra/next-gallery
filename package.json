@@ -1,6 +1,6 @@
 {
     "name": "next-gallery",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "private": false,
     "description": "Next.js component for creating responsive image gallery",
     "source": "src/index.tsx",
