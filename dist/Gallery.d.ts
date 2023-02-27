@@ -15,6 +15,7 @@ export type GalleryProps<NameT, StateT> = {
     margin?: string;
     initState?: StateT;
     imgLoader?: ImageLoader;
+    spanLastRow?: number;
 } & ({
     images: NamedImage<NameT>[];
     overlay: (name: NameT, state: StateT, setState: Dispatch<SetStateAction<StateT>>) => ReactElement;
@@ -22,4 +23,4 @@ export type GalleryProps<NameT, StateT> = {
     images: Image[];
     overlay?: undefined;
 });
-export declare function Gallery<NameT, StateT>({ images, widths, ratios, percentVw, margin, initState, imgLoader, overlay, }: GalleryProps<NameT, StateT>): JSX.Element | null;
+export declare function Gallery<NameT, StateT>({ images, widths, ratios, percentVw, margin, initState, imgLoader, overlay, spanLastRow, }: GalleryProps<NameT, StateT>): JSX.Element | null;

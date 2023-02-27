@@ -1,6 +1,38 @@
 import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { jsx, jsxs } from 'react/jsx-runtime';
+import { jsxs, jsx } from 'react/jsx-runtime';
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
+}
+function _createForOfIteratorHelperLoose(o, allowArrayLike) {
+  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+  if (it) return (it = it.call(o)).next.bind(it);
+  if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+    if (it) o = it;
+    var i = 0;
+    return function () {
+      if (i >= o.length) return {
+        done: true
+      };
+      return {
+        done: false,
+        value: o[i++]
+      };
+    };
+  }
+  throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
 
 function useWindowWidth() {
   var _useState = useState(null),
@@ -29,30 +61,41 @@ function Gallery(_ref) {
     margin = _ref$margin === void 0 ? '2px' : _ref$margin,
     initState = _ref.initState,
     imgLoader = _ref.imgLoader,
-    overlay = _ref.overlay;
+    overlay = _ref.overlay,
+    _ref$spanLastRow = _ref.spanLastRow,
+    spanLastRow = _ref$spanLastRow === void 0 ? 0 : _ref$spanLastRow;
   var _useState = useState(new Array(images.length).fill(initState)),
     state = _useState[0],
     setState = _useState[1];
-  var sizes = useMemo(function () {
-    return ratios.map(function (ratio) {
-      var current_ratio = 0;
-      var width_percent = [];
-      for (var i = 0; i < images.length; i++) {
-        if (current_ratio + images[i].aspect_ratio <= ratio) {
-          current_ratio += images[i].aspect_ratio;
-        } else {
-          for (var j = width_percent.length; j < i; j++) {
-            width_percent.push(Math.floor(images[j].aspect_ratio / current_ratio * 1000) / 10);
+  var _useMemo = useMemo(function () {
+      var sizes = [];
+      var wl = [];
+      for (var _iterator = _createForOfIteratorHelperLoose(ratios), _step; !(_step = _iterator()).done;) {
+        var ratio = _step.value;
+        var current_ratio = 0;
+        var width_percent = [];
+        for (var i = 0; i < images.length; i++) {
+          if (current_ratio + images[i].aspect_ratio <= ratio) {
+            current_ratio += images[i].aspect_ratio;
+          } else {
+            for (var j = width_percent.length; j < i; j++) {
+              width_percent.push(Math.floor(images[j].aspect_ratio / current_ratio * 1000) / 10);
+            }
+            current_ratio = images[i].aspect_ratio;
           }
-          current_ratio = images[i].aspect_ratio;
         }
+        var _width_left = Math.floor((1 - current_ratio / ratio) * 1000) / 10;
+        var shouldSpan = 100 - _width_left < spanLastRow;
+        for (var _i = width_percent.length; _i < images.length; _i++) {
+          width_percent.push(Math.floor(images[_i].aspect_ratio / (shouldSpan ? ratio : current_ratio) * 1000) / 10);
+        }
+        sizes.push(width_percent);
+        wl.push(shouldSpan ? _width_left : 0);
       }
-      for (var _i = width_percent.length; _i < images.length; _i++) {
-        width_percent.push(Math.floor(images[_i].aspect_ratio / current_ratio * 1000) / 10);
-      }
-      return width_percent;
-    });
-  }, [images, ratios]);
+      return [sizes, wl];
+    }, [images, ratios]),
+    sizes = _useMemo[0],
+    width_left = _useMemo[1];
   var width = useWindowWidth();
   var sizeLevel = useMemo(function () {
     if (width === null) return null;
@@ -62,12 +105,12 @@ function Gallery(_ref) {
     return index === -1 ? ratios.length - 1 : index;
   }, [width, widths, ratios]);
   if (width == null || sizeLevel === null) return null;
-  return /*#__PURE__*/jsx("div", {
+  return /*#__PURE__*/jsxs("div", {
     style: {
       display: 'flex',
       flexWrap: 'wrap'
     },
-    children: images.map(function (image, index) {
+    children: [images.map(function (image, index) {
       var _image$alt;
       return /*#__PURE__*/jsx("div", {
         style: {
@@ -112,7 +155,13 @@ function Gallery(_ref) {
           }) : null]
         })
       }, index);
-    })
+    }), /*#__PURE__*/jsx("div", {
+      style: {
+        width: width_left[sizeLevel] + '%',
+        flexShrink: 0,
+        flexGrow: 1
+      }
+    })]
   });
 }
 
