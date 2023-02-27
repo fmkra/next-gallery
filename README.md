@@ -48,6 +48,7 @@ More examples in [pages](pages) folder.
 - `widths` - array of width breakpoints in pixels (e.g. `[400, 800, 1200]`)
 - `ratios` - array of aspect ratios, its length has to be bigger by one than `widths` array (e.g. `[16/9, 32/9, 48/9, 64/9]` along with `widths` above would result in row of proportion 16:9 (one 16:9 image or two 9:16, etc.) for screen widths 0-400px, 32:9 for 400-800px, etc.)
 - `percentVw` (default: 100) - percent of viewport width that gallery takes (used for image optimization)
+- `spanLastRow` (default: 0) - percent of width above which last row will be expanded to fill remaining space
 - `margin` (default: `"2px"`) - margin between images, needs to be valid css value (e.g. `"2px"`, `"2rem"`, etc.)
 - `initState` (optional) - every images keeps its own state, which can be read by overlay, this is initial state for every image (can be used e.g. for selecting images)
 - `imgLoader` (default: next default loader) - image loader, see [next/image](https://nextjs.org/docs/api-reference/next/image#loader)
