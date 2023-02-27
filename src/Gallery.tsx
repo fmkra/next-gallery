@@ -20,6 +20,7 @@ export type GalleryProps<NameT, StateT> = {
     margin?: string
     initState?: StateT
     imgLoader?: ImageLoader,
+    spanLastRow?: number,
 } & ({
     images: NamedImage<NameT>[]
     overlay: (name: NameT, state: StateT, setState: Dispatch<SetStateAction<StateT>>) => ReactElement
@@ -37,28 +38,37 @@ export function Gallery<NameT, StateT>({
     initState,
     imgLoader,
     overlay,
+    spanLastRow = 0,
 }: GalleryProps<NameT, StateT>) {
 
     const [state, setState] = useState<StateT[]>(new Array(images.length).fill(initState))
 
-    const sizes = useMemo(() => ratios.map(ratio => {
-        let current_ratio = 0
-        let width_percent: number[] = []
-        for(let i = 0; i < images.length; i++) {
-            if(current_ratio + images[i].aspect_ratio <= ratio) {
-                current_ratio += images[i].aspect_ratio
-            } else {
-                for(let j = width_percent.length; j < i; j++) {
-                    width_percent.push(Math.floor(images[j].aspect_ratio / current_ratio * 1000) / 10)
+    const [sizes, width_left] = useMemo(() => {
+        const sizes: number[][] = []
+        const wl: number[] = []
+        for(const ratio of ratios) {
+            let current_ratio = 0
+            let width_percent: number[] = []
+            for(let i = 0; i < images.length; i++) {
+                if(current_ratio + images[i].aspect_ratio <= ratio) {
+                    current_ratio += images[i].aspect_ratio
+                } else {
+                    for(let j = width_percent.length; j < i; j++) {
+                        width_percent.push(Math.floor(images[j].aspect_ratio / current_ratio * 1000) / 10)
+                    }
+                    current_ratio=images[i].aspect_ratio
                 }
-                current_ratio=images[i].aspect_ratio
             }
+            const width_left = Math.floor((1 - current_ratio / ratio) * 1000) / 10
+            const shouldSpan = 100-width_left < spanLastRow
+            for(let i = width_percent.length; i < images.length; i++) {
+                width_percent.push(Math.floor(images[i].aspect_ratio / (shouldSpan ? ratio : current_ratio) * 1000) / 10)
+            }
+            sizes.push(width_percent)
+            wl.push(shouldSpan ? width_left : 0)
         }
-        for(let i = width_percent.length; i < images.length; i++) {
-            width_percent.push(Math.floor(images[i].aspect_ratio / current_ratio * 1000) / 10)
-        }
-        return width_percent
-    }), [images, ratios])
+        return [sizes, wl]
+    }, [images, ratios])
 
     const width = useWindowWidth()
 
@@ -109,6 +119,11 @@ export function Gallery<NameT, StateT>({
                     </div>
                 </div>
             ))}
+            <div style={{
+                width: width_left[sizeLevel]+'%',
+                flexShrink: 0,
+                flexGrow: 1,
+            }}></div>
         </div>
     )
 }
