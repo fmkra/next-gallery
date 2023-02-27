@@ -72,10 +72,9 @@ function Gallery(_ref) {
       return /*#__PURE__*/jsx("div", {
         style: {
           boxSizing: 'border-box',
-          width: sizes[index] + '%',
+          width: sizes[sizeLevel][index] + '%',
           flexShrink: 0,
           flexGrow: 1,
-          aspectRatio: image.aspect_ratio,
           position: 'relative',
           paddingBottom: sizes[sizeLevel][index] / image.aspect_ratio + '%'
         },
