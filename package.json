@@ -1,6 +1,6 @@
 {
     "name": "next-gallery",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "private": false,
     "description": "Next.js component for creating responsive image gallery",
     "source": "src/index.tsx",
@@ -29,7 +29,11 @@
         "type": "git",
         "url": "git+https://github.com/fmkra/next-gallery.git"
     },
-    "keywords": ["nextjs", "images", "react"],
+    "keywords": [
+        "nextjs",
+        "images",
+        "react"
+    ],
     "author": "Filip Krawczyk <kontakt@fkrawczyk.pl>",
     "license": "MIT",
     "bugs": {
