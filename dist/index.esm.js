@@ -93,7 +93,7 @@ function Gallery(_ref) {
         wl.push(shouldSpan ? _width_left : 0);
       }
       return [sizes, wl];
-    }, [images, ratios]),
+    }, [images, ratios, spanLastRow]),
     sizes = _useMemo[0],
     width_left = _useMemo[1];
   var width = useWindowWidth();

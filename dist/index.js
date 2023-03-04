@@ -50,7 +50,7 @@ function Gallery({
       wl.push(shouldSpan ? width_left : 0);
     }
     return [sizes, wl];
-  }, [images, ratios]);
+  }, [images, ratios, spanLastRow]);
   const width = useWindowWidth();
   const sizeLevel = useMemo(() => {
     if (width === null) return null;
