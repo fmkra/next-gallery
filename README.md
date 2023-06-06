@@ -16,7 +16,7 @@ npm install next-gallery
 ## Usage
 
 ```tsx
-import Gallery from "next-gallery"
+import { Gallery } from "next-gallery"
 
 const images = [
     { src: "https://picsum.photos/id/1018/1920/1080/", aspect_ratio: 16/9 },
