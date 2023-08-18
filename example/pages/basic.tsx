@@ -1,5 +1,5 @@
 import React from 'react'
-import { Gallery } from '../src'
+import { Gallery } from '../../src'
 
 const images = [
     { src: 'https://picsum.photos/id/1018/1920/1080/', aspect_ratio: 16 / 9 },

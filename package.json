@@ -1,30 +1,26 @@
 {
     "name": "next-gallery",
-    "version": "1.2.1",
-    "private": false,
+    "version": "2.0.0",
     "description": "Next.js component for creating responsive image gallery",
-    "source": "src/index.tsx",
-    "main": "dist/index.js",
-    "module": "dist/index.esm.js",
-    "types": "dist/index.d.ts",
-    "sideEffects": false,
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/types/index.d.ts",
     "publishConfig": {
         "source": "src/index.tsx",
         "main": "dist/index.js"
     },
-    "scripts": {
-        "dev": "next dev",
-        "build": "next build",
-        "lint": "next lint",
-        "start": "next start",
-        "prepare": "rm -rf dist && rm -rf .next && npm run build:package",
-        "build:package": "microbundle -f modern,esm --compress=false --jsx React.createElement --jsxFragment React.Fragment --jsxImportSource react --globals react/jsx-runtime=jsx"
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
+        }
     },
     "files": [
-        "dist",
+        "dist/",
+        "LICENSE",
         "README.md"
     ],
-    "exports": "./dist/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/fmkra/next-gallery.git"
@@ -39,24 +35,53 @@
     "bugs": {
         "url": "https://github.com/fmkra/next-gallery/issues"
     },
+    "scripts": {
+        "clean": "rm -rf dist",
+        "build:types": "tsc --emitDeclarationOnly",
+        "build:js": "rollup -c",
+        "build": "pnpm run build:js && pnpm run build:types",
+        "lint": "eslint --ignore-path .gitignore --fix src",
+        "format": "prettier --write src"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.17.9",
+        "autoprefixer": "^10.4.15"
+    },
     "peerDependencies": {
         "next": ">= 13.1.1",
         "react": ">=  17.0.2",
         "react-dom": ">= 17.0.2"
     },
     "devDependencies": {
-        "@babel/core": "^7.20.7",
-        "@types/node": "^18.0.6",
-        "@types/react": "^18.0.15",
-        "babel-loader": "^8.3.0",
-        "eslint": "^8.20.0",
-        "eslint-config-next": "^12.2.3",
-        "microbundle": "^0.15.0",
-        "microbundle-crl": "^0.13.11",
-        "next": "^13.1.1",
-        "np": "^7.6.2",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "typescript": "^4.7.4"
+        "@babel/plugin-transform-runtime": "^7.21.0",
+        "@babel/preset-env": "^7.21.5",
+        "@babel/preset-react": "^7.18.6",
+        "@babel/preset-typescript": "^7.22.5",
+        "@rollup/plugin-alias": "^5.0.0",
+        "@rollup/plugin-babel": "^6.0.3",
+        "@rollup/plugin-commonjs": "^24.1.0",
+        "@rollup/plugin-node-resolve": "^15.0.2",
+        "@rollup/plugin-terser": "^0.4.0",
+        "@rollup/plugin-typescript": "^11.1.2",
+        "@types/node": "^20.4.5",
+        "@types/react": "^18.2.17",
+        "@types/react-dom": "^18.2.7",
+        "eslint": "^8.39.0",
+        "eslint-plugin-react": "^7.32.2",
+        "glob": "^10.3.3",
+        "lint-staged": "^13.2.2",
+        "prettier": "^2.8.8",
+        "rollup": "^3.23.0",
+        "rollup-plugin-analyzer": "^4.0.0",
+        "rollup-plugin-postcss-modules": "^2.1.1",
+        "rollup-plugin-preserve-directives": "^0.2.0",
+        "typescript": "^5.1.6"
+    },
+    "engines": {
+        "node": ">=16.0.0 || >=18.0.0 || >=19.0.0 || >=20.0.0"
+    },
+    "lint-staged": {
+        "*.js": "npm run lint",
+        "*.{js,css,md*}": "npm run format"
     }
 }

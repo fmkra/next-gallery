@@ -5,9 +5,8 @@ node_modules
 *.lock
 .next
 .yarnclean
-pages
+example
 .eslintrc
 .gitignore
 next-env.d.ts
 next.config.js
-assets
