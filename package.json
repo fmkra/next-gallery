@@ -42,6 +42,7 @@
         "build": "pnpm run build:js && pnpm run build:types",
         "lint": "eslint --ignore-path .gitignore --fix src",
         "format": "prettier --write src",
+        "example:install": "cd example && pnpm install",
         "example:dev": "cd example && pnpm run dev",
         "example:build": "cd example && pnpm run build"
     },
