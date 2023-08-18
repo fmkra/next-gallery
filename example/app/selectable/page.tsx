@@ -30,7 +30,9 @@ export default function SelectablePage() {
         <Gallery
             {...{ images, widths, ratios }}
             initState={false}
-            overlay={(name, state, setState) => <MyOverlay selected={state} onClick={() => setState((s) => !s)} />}
+            overlay={(name, state, setState) => (
+                <MyOverlay selected={state} onClick={() => setState((s: boolean) => !s)} />
+            )}
         />
     )
 }
