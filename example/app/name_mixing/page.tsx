@@ -1,5 +1,7 @@
+'use client'
+
 import React from 'react'
-import { Gallery, NamedImage } from '../src'
+import { Gallery, NamedImage } from 'next-gallery'
 
 const styles: React.CSSProperties = {
     color: '#fff',

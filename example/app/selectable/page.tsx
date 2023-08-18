@@ -1,5 +1,7 @@
+'use client'
+
 import React from 'react'
-import { Gallery } from '../src'
+import { Gallery } from 'next-gallery'
 
 const MyOverlay = ({ selected, onClick }: { selected: boolean; onClick: () => void }) => (
     <div
