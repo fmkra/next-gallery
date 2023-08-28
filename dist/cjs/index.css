@@ -1,9 +1,0 @@
-.gallery-module_container__hVSCq {
-    display: flex;
-}
-
-.gallery-module_container__hVSCq > div {
-    height: 100px;
-    outline: solid 1px red;
-    width: var(--gallery-1);
-}

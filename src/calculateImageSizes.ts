@@ -4,29 +4,42 @@ export interface Image {
     alt?: string
 }
 
-export interface GalleryCalculationProps {
+export type GalleryCalculationProps = {
     ratios: number[]
     images: Image[]
-    spanLastRow?: number
+} & (
+    | {
+          lastRowBehavior: 'fill' | 'preserve'
+      }
+    | {
+          lastRowBehavior: 'match-previous'
+          allowShrinking?: boolean
+          shrinkLimit?: number
+      }
+)
+
+function round(number: number) {
+    return Math.floor(number * 10000) / 100
 }
 
-export const calculateImageSizes = ({ ratios, images }: GalleryCalculationProps) => {
-    const sizes: number[][] = Array.from({ length: images.length }, () => [])
+export const calculateImageSizes = (arg: GalleryCalculationProps) => {
+    const sizes: number[][] = Array.from({ length: arg.images.length }, () => [])
     const wl: number[] = []
-    for (const ratio_index in ratios) {
-        const desired_ratio = ratios[ratio_index]
+    for (const desired_ratio of arg.ratios) {
         let current_ratio = 0
         let result_width_percent: number[] = []
         let second_last_row_start = 0
-        for (let i = 0; i < images.length; i++) {
-            if (current_ratio + images[i].aspect_ratio <= desired_ratio) {
-                current_ratio += images[i].aspect_ratio
+        for (let i = 0; i < arg.images.length; i++) {
+            if (current_ratio + arg.images[i].aspect_ratio <= desired_ratio) {
+                current_ratio += arg.images[i].aspect_ratio
             } else {
                 second_last_row_start = result_width_percent.length
-                for (let j = result_width_percent.length; j < i; j++) {
-                    result_width_percent.push(Math.floor((images[j].aspect_ratio / current_ratio) * 1000) / 10)
+                const start_index = result_width_percent.length
+                for (let j = start_index; j < i; j++) {
+                    const rounded = round(arg.images[j].aspect_ratio / current_ratio)
+                    result_width_percent.push(rounded)
                 }
-                current_ratio = images[i].aspect_ratio
+                current_ratio = arg.images[i].aspect_ratio
             }
         }
         const second_last_row = result_width_percent.slice(second_last_row_start)
@@ -37,8 +50,11 @@ export const calculateImageSizes = ({ ratios, images }: GalleryCalculationProps)
         const last_row_start = result_width_percent.length
         let last_row_ratio = 0
         const last_row_multipliers: number[] = []
-        for (let i = result_width_percent.length; i < images.length; i++) {
-            const r = Math.floor((images[i].aspect_ratio / desired_ratio) * 1000) / 10
+        for (let i = result_width_percent.length; i < arg.images.length; i++) {
+            // last row initialy match the desired_ratio and will be rescaled
+            const r = round(
+                arg.images[i].aspect_ratio / (arg.lastRowBehavior != 'fill' ? desired_ratio : current_ratio)
+            )
             result_width_percent.push(r)
             last_row_ratio += r
             while (second_last_row[second_last_row_i] < last_row_ratio) second_last_row_i++
@@ -46,16 +62,29 @@ export const calculateImageSizes = ({ ratios, images }: GalleryCalculationProps)
         }
         const last_row = result_width_percent.slice(last_row_start)
 
-        console.log(second_last_row, last_row)
-        console.log(last_row_multipliers)
+        if (arg.lastRowBehavior == 'match-previous') {
+            // calculate the best multiplier for the last row
+
+            // in the worst case we will just fill the whole width with the last row
+            let best_multiplier = 100 / last_row_ratio
+            for (const m of last_row_multipliers) {
+                if (m < best_multiplier) best_multiplier = m
+            }
+
+            for (let i = last_row_start; i < result_width_percent.length; i++) {
+                result_width_percent[i] *= best_multiplier
+            }
+        }
+
+        let width_left = 100
         for (let i = last_row_start; i < result_width_percent.length; i++) {
-            result_width_percent[i] *= Math.min(...last_row_multipliers)
+            width_left -= result_width_percent[i]
         }
 
         for (const i in result_width_percent) {
             sizes[i].push(result_width_percent[i])
         }
-        wl.push(0)
+        wl.push(width_left)
     }
     return [sizes, wl] as const
 }

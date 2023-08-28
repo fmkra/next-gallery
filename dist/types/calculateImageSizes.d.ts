@@ -3,9 +3,14 @@ export interface Image {
     aspect_ratio: number;
     alt?: string;
 }
-export interface GalleryCalculationProps {
+export type GalleryCalculationProps = {
     ratios: number[];
     images: Image[];
-    spanLastRow?: number;
-}
-export declare const calculateImageSizes: ({ ratios, images }: GalleryCalculationProps) => readonly [number[][], number[]];
+} & ({
+    lastRowBehavior: 'fill' | 'preserve';
+} | {
+    lastRowBehavior: 'match-previous';
+    allowShrinking?: boolean;
+    shrinkLimit?: number;
+});
+export declare const calculateImageSizes: (arg: GalleryCalculationProps) => readonly [number[][], number[]];

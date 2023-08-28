@@ -14,15 +14,15 @@ const elementStyle = (aspectRatio: number, sizes: number[]) =>
         position: 'relative',
         boxSizing: `border-box`,
         flexShrink: 0,
-        // flexGrow: 1,
+        flexGrow: 1,
     } as Record<string, any>)
 
-interface GalleryProps extends GalleryCalculationProps {
+type GalleryProps = GalleryCalculationProps & {
     widths: number[]
 }
 
-export function NewGallery({ images, widths, ratios, spanLastRow }: GalleryProps) {
-    const [sizes, width_left] = calculateImageSizes({ ratios, images, spanLastRow })
+export function NewGallery(props: GalleryProps) {
+    const [sizes, width_left] = calculateImageSizes(props)
 
     const id = useId().replace(/:/g, '')
 
@@ -39,7 +39,7 @@ export function NewGallery({ images, widths, ratios, spanLastRow }: GalleryProps
                     flex-shrink: 0,
                     flex-grow: 1,
                 }` +
-                    widths
+                    props.widths
                         .map(
                             (width, i) => `
                             @media (min-width: ${width}px) {
@@ -59,7 +59,7 @@ export function NewGallery({ images, widths, ratios, spanLastRow }: GalleryProps
                     <div
                         className={`next-gallery__element-${id}`}
                         key={i}
-                        style={elementStyle(images[i].aspect_ratio, size)}
+                        style={elementStyle(props.images[i].aspect_ratio, size)}
                     >
                         <div
                             style={{
@@ -71,11 +71,11 @@ export function NewGallery({ images, widths, ratios, spanLastRow }: GalleryProps
                             }}
                         >
                             <Image
-                                src={images[i].src}
-                                alt={images[i].alt ?? ''}
+                                src={props.images[i].src}
+                                alt={props.images[i].alt ?? ''}
                                 fill
                                 sizes={
-                                    widths
+                                    props.widths
                                         .map((width, i) => `(max-width: ${width}px) ${(100 / 100) * size[i]}vw`)
                                         .join(', ') + `, ${(100 / 100) * sizes[sizes.length - 1][i]}vw`
                                 }
