@@ -1,2 +1,2 @@
-export{NewGallery}from"./NewGallery.js";
+export{Gallery}from"./Gallery.js";
 //# sourceMappingURL=index.js.map

@@ -1,158 +1,112 @@
-'use client'
+import { useId } from 'react'
+import Image from 'next/image'
+import { GalleryCalculationProps, calculateImageSizes } from './calculateImageSizes'
 
-import React, { useState, useMemo, Dispatch, SetStateAction, ReactElement } from 'react'
-import Image, { ImageLoader } from 'next/image'
-import useWindowWidth from './useWindowWidth'
+const containerStyle = {
+    display: `flex`,
+    flexWrap: `wrap`,
+} as const
 
-export interface Image {
-    src: string
-    aspect_ratio: number
-    alt?: string
-}
+const elementStyle = (aspectRatio: number, sizes: number[]) =>
+    sizes.reduce((acc, val, idx) => ((acc[`--next-gallery-${idx + 1}`] = `${val}%`), acc), {
+        '--next-gallery-ar': `${aspectRatio}`,
+        position: 'relative',
+        boxSizing: `border-box`,
+        flexShrink: 0,
+        flexGrow: 1,
+    } as Record<string, any>)
 
-export interface NamedImage<NameT> extends Image {
-    name: NameT
-}
-
-export type GalleryProps<NameT, StateT> = {
+export type GalleryProps = GalleryCalculationProps & {
     widths: number[]
-    ratios: number[]
-    percentVw?: number
-    margin?: string
-    initState?: StateT
-    imgLoader?: ImageLoader
-    spanLastRow?: number
-} & (
-    | {
-          images: NamedImage<NameT>[]
-          overlay: (name: NameT, state: StateT, setState: Dispatch<SetStateAction<StateT>>) => ReactElement
-      }
-    | {
-          images: Image[]
-          overlay?: undefined
-      }
-)
+    gap?: string
+    overlay?: (index: number) => React.ReactNode
+}
 
-export function Gallery<NameT, StateT>({
-    images,
-    widths,
-    ratios,
-    percentVw = 100,
-    margin = '2px',
-    initState,
-    imgLoader,
-    overlay,
-    spanLastRow = 0,
-}: GalleryProps<NameT, StateT>) {
-    const [state, setState] = useState<StateT[]>(new Array(images.length).fill(initState))
+export function Gallery({ widths, gap = '1px', overlay, ...props }: GalleryProps) {
+    const [sizes, width_left] = calculateImageSizes(props)
 
-    const [sizes, width_left] = useMemo(() => {
-        const sizes: number[][] = []
-        const wl: number[] = []
-        for (const ratio of ratios) {
-            let current_ratio = 0
-            let width_percent: number[] = []
-            for (let i = 0; i < images.length; i++) {
-                if (current_ratio + images[i].aspect_ratio <= ratio) {
-                    current_ratio += images[i].aspect_ratio
-                } else {
-                    for (let j = width_percent.length; j < i; j++) {
-                        width_percent.push(Math.floor((images[j].aspect_ratio / current_ratio) * 1000) / 10)
-                    }
-                    current_ratio = images[i].aspect_ratio
-                }
-            }
-            const width_left = Math.floor((1 - current_ratio / ratio) * 1000) / 10
-            const shouldSpan = 100 - width_left < spanLastRow
-            for (let i = width_percent.length; i < images.length; i++) {
-                width_percent.push(
-                    Math.floor((images[i].aspect_ratio / (shouldSpan ? ratio : current_ratio)) * 1000) / 10
-                )
-            }
-            sizes.push(width_percent)
-            wl.push(shouldSpan ? width_left : 0)
-        }
-        return [sizes, wl]
-    }, [images, ratios, spanLastRow])
-
-    const width = useWindowWidth()
-
-    const sizeLevel = useMemo(() => {
-        if (width === null) return null
-        const index = widths.findIndex((value) => value > width)
-        return index === -1 ? ratios.length - 1 : index
-    }, [width, widths, ratios])
-
-    if (width == null || sizeLevel === null) return null
+    const id = useId().replace(/:/g, '')
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-            }}
-        >
-            {images.map((image, index) => (
-                <div
-                    key={index}
-                    style={{
-                        boxSizing: 'border-box',
-                        width: sizes[sizeLevel][index] + '%',
-                        flexShrink: 0,
-                        flexGrow: 1,
-                        position: 'relative',
-                        paddingBottom: sizes[sizeLevel][index] / image.aspect_ratio + '%',
-                    }}
-                >
+        <>
+            <style>
+                {`
+                .next-gallery__element-${id} {
+                    width: var(--next-gallery-1);
+                    padding-bottom: calc(var(--next-gallery-1) / var(--next-gallery-ar));
+                }
+                .next-gallery__wl-${id} {
+                    width: var(--next-gallery-1);
+                    flex-shrink: 0,
+                    flex-grow: 1,
+                }` +
+                    widths
+                        .map(
+                            (width, i) => `
+                            @media (min-width: ${width}px) {
+                                .next-gallery__element-${id} {
+                                    width: var(--next-gallery-${i + 2});
+                                    padding-bottom: calc(var(--next-gallery-${i + 2}) / var(--next-gallery-ar));
+                                }
+                                .next-gallery__wl-${id} {
+                                    width: var(--next-gallery-${i + 2});
+                                }
+                            }`
+                        )
+                        .join('')}
+            </style>
+            <div style={containerStyle}>
+                {sizes.map((size, i) => (
                     <div
-                        style={{
-                            position: 'absolute',
-                            top: margin,
-                            left: margin,
-                            right: margin,
-                            bottom: margin,
-                        }}
+                        className={`next-gallery__element-${id}`}
+                        key={i}
+                        style={elementStyle(props.images[i].aspect_ratio, size)}
                     >
-                        <Image
-                            src={image.src}
-                            alt={image.alt ?? ''}
-                            fill
-                            loader={imgLoader}
-                            sizes={
-                                widths
-                                    .map(
-                                        (width, i) => `(max-width: ${width}px) ${(percentVw / 100) * sizes[i][index]}vw`
-                                    )
-                                    .join(', ') + `, ${(percentVw / 100) * sizes[sizes.length - 1][index]}vw`
-                            }
-                        />
-                        {overlay ? (
+                        <div
+                            style={{
+                                position: 'absolute',
+                                top: gap,
+                                left: gap,
+                                right: gap,
+                                bottom: gap,
+                            }}
+                        >
+                            <Image
+                                src={props.images[i].src}
+                                alt={props.images[i].alt ?? ''}
+                                fill
+                                sizes={
+                                    widths
+                                        .map((width, i) => `(max-width: ${width}px) ${(100 / 100) * size[i]}vw`)
+                                        .join(', ') + `, ${(100 / 100) * sizes[sizes.length - 1][i]}vw`
+                                }
+                            />
+                        </div>
+
+                        {overlay && (
                             <div
                                 style={{
                                     position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    right: 0,
-                                    bottom: 0,
+                                    top: gap,
+                                    left: gap,
+                                    right: gap,
+                                    bottom: gap,
+                                    zIndex: 2,
                                 }}
                             >
-                                {overlay((image as NamedImage<NameT>).name, state[index], (arg) => {
-                                    if (arg instanceof Function)
-                                        setState(state.map((value, i) => (i === index ? arg(value) : value)))
-                                    else setState(state.map((value, i) => (i === index ? arg : value)))
-                                })}
+                                {overlay(i)}
                             </div>
-                        ) : null}
+                        )}
                     </div>
-                </div>
-            ))}
-            <div
-                style={{
-                    width: width_left[sizeLevel] + '%',
-                    flexShrink: 0,
-                    flexGrow: 1,
-                }}
-            ></div>
-        </div>
+                ))}
+                <div
+                    className={`next-gallery__wl-${id}`}
+                    style={width_left.reduce(
+                        (acc, val, idx) => ((acc[`--next-gallery-${idx + 1}`] = `${val}%`), acc),
+                        {} as Record<string, string>
+                    )}
+                ></div>
+            </div>
+        </>
     )
 }

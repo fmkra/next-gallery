@@ -7,6 +7,7 @@ type LastRowBehaviorMatchPrevious = {
     lastRowBehavior: 'match-previous';
     shrinkLimit?: number;
     growLimit?: number;
+    preferGrowing?: number;
 };
 type LastRowBehaviorPreserve = {
     lastRowBehavior: 'preserve';

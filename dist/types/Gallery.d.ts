@@ -1,26 +1,8 @@
-import { Dispatch, SetStateAction, ReactElement } from 'react';
-import { ImageLoader } from 'next/image';
-export interface Image {
-    src: string;
-    aspect_ratio: number;
-    alt?: string;
-}
-export interface NamedImage<NameT> extends Image {
-    name: NameT;
-}
-export type GalleryProps<NameT, StateT> = {
+/// <reference types="react" />
+import { GalleryCalculationProps } from './calculateImageSizes';
+export type GalleryProps = GalleryCalculationProps & {
     widths: number[];
-    ratios: number[];
-    percentVw?: number;
-    margin?: string;
-    initState?: StateT;
-    imgLoader?: ImageLoader;
-    spanLastRow?: number;
-} & ({
-    images: NamedImage<NameT>[];
-    overlay: (name: NameT, state: StateT, setState: Dispatch<SetStateAction<StateT>>) => ReactElement;
-} | {
-    images: Image[];
-    overlay?: undefined;
-});
-export declare function Gallery<NameT, StateT>({ images, widths, ratios, percentVw, margin, initState, imgLoader, overlay, spanLastRow, }: GalleryProps<NameT, StateT>): import("react/jsx-runtime").JSX.Element | null;
+    gap?: string;
+    overlay?: (index: number) => React.ReactNode;
+};
+export declare function Gallery({ widths, gap, overlay, ...props }: GalleryProps): import("react/jsx-runtime").JSX.Element;

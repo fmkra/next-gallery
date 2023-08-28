@@ -8,6 +8,7 @@ type LastRowBehaviorMatchPrevious = {
     lastRowBehavior: 'match-previous'
     shrinkLimit?: number // default: 0.5, 1 disables shrinking
     growLimit?: number // default: 1.5, 1 disables growing
+    preferGrowing?: number // default: 2
 }
 
 type LastRowBehaviorPreserve = {
@@ -63,6 +64,9 @@ export const calculateImageSizes = (arg: GalleryCalculationProps) => {
             last_row_ratio += r
             while (second_last_row[second_last_row_i] < last_row_ratio) second_last_row_i++
             last_row_multipliers.push(second_last_row[second_last_row_i] / last_row_ratio)
+            if (second_last_row_i > 0) {
+                last_row_multipliers.push(second_last_row[second_last_row_i - 1] / last_row_ratio)
+            }
         }
 
         if (arg.lastRowBehavior == 'fill') {
@@ -74,11 +78,31 @@ export const calculateImageSizes = (arg: GalleryCalculationProps) => {
             }
         } else if (arg.lastRowBehavior == 'match-previous') {
             // calculate the best multiplier for the last row
+            const growLimit = arg.growLimit ?? 1.5
+            const shrinkLimit = arg.shrinkLimit ?? 0.5
+            const preferGrowing = arg.preferGrowing ?? 2
 
             // in the worst case we will just fill the whole width with the last row
-            let best_multiplier = 100 / last_row_ratio
+            last_row_multipliers.push(100 / last_row_ratio)
+
+            let best_multiplier = 1
+            let best_fitness = Infinity
             for (const m of last_row_multipliers) {
-                if (m < best_multiplier) best_multiplier = m
+                if (m >= 1) {
+                    const m_fitness = m
+                    if (m > growLimit) continue
+                    if (Math.abs(m_fitness) < Math.abs(best_fitness)) {
+                        best_multiplier = m
+                        best_fitness = m_fitness
+                    }
+                } else {
+                    const m_fitness = preferGrowing / m
+                    if (m < shrinkLimit) continue
+                    if (Math.abs(m_fitness) < Math.abs(best_fitness)) {
+                        best_multiplier = m
+                        best_fitness = m_fitness
+                    }
+                }
             }
 
             for (let i = last_row_start; i < result_width_percent.length; i++) {

@@ -1,2 +1,2 @@
-"use strict";var e=require("./NewGallery.js");exports.NewGallery=e.NewGallery;
+"use strict";var r=require("./Gallery.js");exports.Gallery=r.Gallery;
 //# sourceMappingURL=index.js.map
