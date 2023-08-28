@@ -1,5 +1,4 @@
 import { useId } from 'react'
-import type { Image as ImageT } from './Gallery'
 import Image from 'next/image'
 import { GalleryCalculationProps, calculateImageSizes } from './calculateImageSizes'
 

@@ -3,14 +3,21 @@ export interface Image {
     aspect_ratio: number;
     alt?: string;
 }
+type LastRowBehaviorMatchPrevious = {
+    lastRowBehavior: 'match-previous';
+    shrinkLimit?: number;
+    growLimit?: number;
+};
+type LastRowBehaviorPreserve = {
+    lastRowBehavior: 'preserve';
+};
+type LastRowBehaviorFill = {
+    lastRowBehavior: 'fill';
+    threshold?: number;
+};
 export type GalleryCalculationProps = {
     ratios: number[];
     images: Image[];
-} & ({
-    lastRowBehavior: 'fill' | 'preserve';
-} | {
-    lastRowBehavior: 'match-previous';
-    allowShrinking?: boolean;
-    shrinkLimit?: number;
-});
+} & (LastRowBehaviorMatchPrevious | LastRowBehaviorPreserve | LastRowBehaviorFill);
 export declare const calculateImageSizes: (arg: GalleryCalculationProps) => readonly [number[][], number[]];
+export {};

@@ -4,19 +4,25 @@ export interface Image {
     alt?: string
 }
 
+type LastRowBehaviorMatchPrevious = {
+    lastRowBehavior: 'match-previous'
+    shrinkLimit?: number // default: 0.5, 1 disables shrinking
+    growLimit?: number // default: 1.5, 1 disables growing
+}
+
+type LastRowBehaviorPreserve = {
+    lastRowBehavior: 'preserve'
+}
+
+type LastRowBehaviorFill = {
+    lastRowBehavior: 'fill'
+    threshold?: number // deafult: 0, above what percentage of last row being filled, it should stretch to the full width of the screen
+}
+
 export type GalleryCalculationProps = {
     ratios: number[]
     images: Image[]
-} & (
-    | {
-          lastRowBehavior: 'fill' | 'preserve'
-      }
-    | {
-          lastRowBehavior: 'match-previous'
-          allowShrinking?: boolean
-          shrinkLimit?: number
-      }
-)
+} & (LastRowBehaviorMatchPrevious | LastRowBehaviorPreserve | LastRowBehaviorFill)
 
 function round(number: number) {
     return Math.floor(number * 10000) / 100
@@ -52,17 +58,21 @@ export const calculateImageSizes = (arg: GalleryCalculationProps) => {
         const last_row_multipliers: number[] = []
         for (let i = result_width_percent.length; i < arg.images.length; i++) {
             // last row initialy match the desired_ratio and will be rescaled
-            const r = round(
-                arg.images[i].aspect_ratio / (arg.lastRowBehavior != 'fill' ? desired_ratio : current_ratio)
-            )
+            const r = round(arg.images[i].aspect_ratio / desired_ratio)
             result_width_percent.push(r)
             last_row_ratio += r
             while (second_last_row[second_last_row_i] < last_row_ratio) second_last_row_i++
             last_row_multipliers.push(second_last_row[second_last_row_i] / last_row_ratio)
         }
-        const last_row = result_width_percent.slice(last_row_start)
 
-        if (arg.lastRowBehavior == 'match-previous') {
+        if (arg.lastRowBehavior == 'fill') {
+            const multiplier = desired_ratio / current_ratio
+            if (1 >= multiplier * (arg.threshold ?? 0)) {
+                for (let i = last_row_start; i < result_width_percent.length; i++) {
+                    result_width_percent[i] *= multiplier
+                }
+            }
+        } else if (arg.lastRowBehavior == 'match-previous') {
             // calculate the best multiplier for the last row
 
             // in the worst case we will just fill the whole width with the last row
