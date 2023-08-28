@@ -47,7 +47,8 @@
         "example:build": "cd example && pnpm run build"
     },
     "dependencies": {
-        "@babel/runtime": "^7.17.9"
+        "@babel/runtime": "^7.17.9",
+        "tslib": "^2.6.2"
     },
     "peerDependencies": {
         "next": ">= 13.1.1",
@@ -78,7 +79,6 @@
         "rollup-plugin-analyzer": "^4.0.0",
         "rollup-plugin-postcss-modules": "^2.1.1",
         "rollup-plugin-preserve-directives": "^0.2.0",
-        "tslib": "^2.6.2",
         "typescript": "^5.1.6"
     },
     "engines": {

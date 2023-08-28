@@ -13,6 +13,9 @@ dependencies:
   react-dom:
     specifier: '>= 17.0.2'
     version: 18.2.0(react@18.2.0)
+  tslib:
+    specifier: ^2.6.2
+    version: 2.6.2
 
 devDependencies:
   '@babel/plugin-transform-runtime':
@@ -84,9 +87,6 @@ devDependencies:
   rollup-plugin-preserve-directives:
     specifier: ^0.2.0
     version: 0.2.0(rollup@3.23.0)
-  tslib:
-    specifier: ^2.6.2
-    version: 2.6.2
   typescript:
     specifier: ^5.1.6
     version: 5.1.6
@@ -4666,7 +4666,6 @@ packages:
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
-    dev: true
 
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
