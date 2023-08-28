@@ -1,5 +1,5 @@
 import { useId } from 'react'
-import Image from 'next/image'
+import Image, { ImageLoader } from 'next/image'
 import { GalleryCalculationProps, calculateImageSizes } from './calculateImageSizes'
 
 const containerStyle = {
@@ -18,11 +18,13 @@ const elementStyle = (aspectRatio: number, sizes: number[]) =>
 
 export type GalleryProps = GalleryCalculationProps & {
     widths: number[]
-    gap?: string
     overlay?: (index: number) => React.ReactNode
+    gap?: string
+    percentVw?: number
+    imgLoader?: ImageLoader
 }
 
-export function Gallery({ widths, gap = '1px', overlay, ...props }: GalleryProps) {
+export function Gallery({ widths, gap = '1px', percentVw = 100, overlay, imgLoader, ...props }: GalleryProps) {
     const [sizes, width_left] = calculateImageSizes(props)
 
     const id = useId().replace(/:/g, '')
@@ -75,10 +77,11 @@ export function Gallery({ widths, gap = '1px', overlay, ...props }: GalleryProps
                                 src={props.images[i].src}
                                 alt={props.images[i].alt ?? ''}
                                 fill
+                                loader={imgLoader}
                                 sizes={
                                     widths
-                                        .map((width, i) => `(max-width: ${width}px) ${(100 / 100) * size[i]}vw`)
-                                        .join(', ') + `, ${(100 / 100) * sizes[sizes.length - 1][i]}vw`
+                                        .map((width, i) => `(max-width: ${width}px) ${(percentVw / 100) * size[i]}vw`)
+                                        .join(', ') + `, ${(percentVw / 100) * sizes[sizes.length - 1][i]}vw`
                                 }
                             />
                         </div>
