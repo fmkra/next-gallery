@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useMemo, Dispatch, SetStateAction, ReactElement } from 'react'
 import Image, { ImageLoader } from 'next/image'
 import useWindowWidth from './useWindowWidth'
