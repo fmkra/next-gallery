@@ -35,7 +35,7 @@ export default function MyGallery() {
 
 Gallery can be used as both client and server component, but **it's recommended to use it as server component** because it will allow to do all calculations on the server and ship no JS to the user. (All image resizing is done by CSS.)
 
-More examples in [examples](examples) directory.
+More examples in [example](example) directory.
 
 ## props
 

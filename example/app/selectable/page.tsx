@@ -2,37 +2,28 @@
 
 import React from 'react'
 import { Gallery } from 'next-gallery'
-
-const MyOverlay = ({ selected, onClick }: { selected: boolean; onClick: () => void }) => (
-    <div
-        style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            transition: 'background-color 0.3s',
-            backgroundColor: selected ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0)',
-        }}
-        onClick={onClick}
-    ></div>
-)
+import { MyOverlay, OverlayProvider } from './overlay'
 
 const images = [
-    { src: 'https://picsum.photos/id/1018/1920/1080/', aspect_ratio: 16 / 9, name: 1 },
-    { src: 'https://picsum.photos/id/1015/1920/1080/', aspect_ratio: 16 / 9, name: 2 },
+    { src: 'https://picsum.photos/id/10/1920/1080/', aspect_ratio: 16 / 9 },
+    { src: 'https://picsum.photos/id/11/1920/1080/', aspect_ratio: 16 / 9 },
+    { src: 'https://picsum.photos/id/12/1920/1080/', aspect_ratio: 16 / 9 },
+    { src: 'https://picsum.photos/id/13/1920/1080/', aspect_ratio: 16 / 9 },
+    { src: 'https://picsum.photos/id/14/1920/1080/', aspect_ratio: 16 / 9 },
+    { src: 'https://picsum.photos/id/15/1920/1080/', aspect_ratio: 16 / 9 },
+    { src: 'https://picsum.photos/id/16/1920/1080/', aspect_ratio: 16 / 9 },
 ]
-const widths = [500, 1000, 1600]
-const ratios = [2.2, 4, 6, 8]
 
 export default function SelectablePage() {
     return (
-        <Gallery
-            {...{ images, widths, ratios }}
-            initState={false}
-            overlay={(name, state, setState) => (
-                <MyOverlay selected={state} onClick={() => setState((s: boolean) => !s)} />
-            )}
-        />
+        <OverlayProvider>
+            <Gallery
+                images={images}
+                widths={[500, 1000, 1600]}
+                ratios={[2.2, 4, 6, 8]}
+                lastRowBehavior="match-previous"
+                overlay={(i) => <MyOverlay index={i} />}
+            />
+        </OverlayProvider>
     )
 }

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Gallery } from 'next-gallery'
-import { Overlay } from './overlay'
 
 const images = [
     { src: 'https://picsum.photos/id/1019/1440/1080/', aspect_ratio: 4 / 3 },
@@ -16,13 +15,7 @@ const ratios = [2.2, 4, 6, 8]
 export default function BasicPage() {
     return (
         <div className="flex flex-col gap-10">
-            {/* <NewGallery {...{ widths, ratios, images }} lastRowBehavior="fill" />
-            <NewGallery {...{ widths, ratios, images }} lastRowBehavior="preserve" /> */}
-            <Gallery
-                {...{ widths, ratios, images }}
-                lastRowBehavior="match-previous"
-                overlay={(i) => <Overlay index={i} />}
-            />
+            <Gallery {...{ widths, ratios, images }} lastRowBehavior="match-previous" />
         </div>
     )
 }
