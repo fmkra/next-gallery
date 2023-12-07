@@ -5,7 +5,7 @@ export interface Image {
 }
 
 type LastRowBehaviorMatchPrevious = {
-    lastRowBehavior: 'match-previous'
+    lastRowBehavior?: 'match-previous'
     shrinkLimit?: number // default: 0.5, 1 disables shrinking
     growLimit?: number // default: 1.5, 1 disables growing
     preferGrowing?: number // default: 2
@@ -76,7 +76,7 @@ export const calculateImageSizes = (arg: GalleryCalculationProps) => {
                     result_width_percent[i] *= multiplier
                 }
             }
-        } else if (arg.lastRowBehavior == 'match-previous') {
+        } else if (arg.lastRowBehavior == 'match-previous' || arg.lastRowBehavior === undefined) {
             // calculate the best multiplier for the last row
             const growLimit = arg.growLimit ?? 1.5
             const shrinkLimit = arg.shrinkLimit ?? 0.5

@@ -4,7 +4,7 @@ export interface Image {
     alt?: string;
 }
 type LastRowBehaviorMatchPrevious = {
-    lastRowBehavior: 'match-previous';
+    lastRowBehavior?: 'match-previous';
     shrinkLimit?: number;
     growLimit?: number;
     preferGrowing?: number;
