@@ -25,6 +25,15 @@ export type GalleryProps = GalleryCalculationProps & {
 }
 
 export function Gallery({ widths, gap = '1px', percentVw = 100, overlay, imgLoader, ...props }: GalleryProps) {
+    if (widths.length + 1 != props.ratios.length) {
+        const isShorter = props.ratios.length < widths.length + 1
+        throw new Error(
+            `'ratios' array is too ${isShorter ? 'short' : 'long'}. It should have length ${
+                widths.length + 1
+            } (because ${widths.length} breakpoints were provided), but has ${props.ratios.length}`
+        )
+    }
+
     const [sizes, width_left] = calculateImageSizes(props)
 
     const id = useId().replace(/:/g, '')
