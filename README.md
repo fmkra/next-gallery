@@ -54,8 +54,35 @@ More examples in [example](example) directory.
 -   for other props available only for certain `lastRowBehavior` values see [last row behavior](#last-row-behavior) section below.
 -   `overlay` (optional) - It is a function that takes image index and returns `ReactNode` that will be rendered as overlay for every image. Overlay can be used e.g. for displaying text on top of the image or for selecting images (see example below).
 
-```
-add example here
+```tsx
+import { Gallery } from 'next-gallery'
+
+const images = [
+    { src: 'https://picsum.photos/id/1019/1440/1080/', aspect_ratio: 4 / 3 },
+    ...
+]
+
+const overlays = ['Image 1', ...];
+
+const overlayStyle = {...} as const;
+
+export default function Page() {
+    return (
+        <div className="flex flex-col gap-10">
+            <Gallery
+                widths={[500, 1000, 1600]}
+                ratios={[2.2, 4, 6, 8]}
+                images={images}
+                lastRowBehavior="match-previous"
+                overlay={(i) => (
+                    <div style={overlayStyle}>
+                        {overlays[i]}
+                    </div>
+                )}
+            />
+        </div>
+    )
+}
 ```
 
 ## last row behavior
@@ -70,10 +97,12 @@ Last row always has proportion given by `ratios` property. Images align themselv
 
 Last row fills whole width of the gallery. (This may cause the last row to look disproportionately high)
 
--   `threshold` (default: 0) - number in range [0,100] that determines when the last row should be filled. If last row would take more percent of width than `threshold`, it will be expanded to fill the remaining space. Otherwise it behaves like `preserve`. (`threshold = 0` will always fill the last row, `threshold = 100` is equivalent to `preserve`)
+-   `threshold` (default: `0`) - number in range `[0,100]` that determines when the last row should be filled. If last row would take more percent of width than `threshold`, it will be expanded to fill the remaining space. Otherwise it behaves like `preserve`. (`threshold = 0` will always fill the last row, `threshold = 100` is equivalent to `preserve`)
 
 ### match-previous
 
 It tries to align last row to the previous one, so that some of the gaps between images in last and second last row align in a straight line.
 
-TODO: additional props
+-   `shrinkLimit` (default: `0.5`) - number in range `[0,1]` that determines how much the last row can shrink. `0` means that there is no limit, `1` means that last row will not shrink at all, `0.5` means that last row can shrink to half of its original size.
+-   `growLimit` (default: `1.5`) - number in range [1,∞] that determines how much the last row can grow. `∞` means that there is no limit, `1` means that last row will not grow at all, `1.5` means that last row can grow by 50% of its original size.
+-   `preferGrow` (default: `2`) - how much is it preferred to grow the last row than shrink it. For example, if set to `2` and the algorithm could choose between growing by `20%` or shrinking by `x`, it would choose to grow when `x > 10%`, otherwise it would shrink. If set to `1`, it always chooses smaller change in percent.
