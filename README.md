@@ -1,7 +1,7 @@
 # next-gallery
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)]()
-[![npm version](https://img.shields.io/badge/npm-v1.2.1-brightgreen)](https://www.npmjs.com/package/next-gallery)
+[![npm version](https://img.shields.io/badge/npm-v2.0.0-brightgreen)](https://www.npmjs.com/package/next-gallery)
 
 Next.js component for creating responsive image gallery
 
