@@ -20,7 +20,7 @@ Also changed first (and now only) overlay function argument from `name` to `inde
 
 ### Removed `spanLastRow` property in favor of `lastRowBehavior`
 
-## 2.0.1
+## 2.0.1 / 2.0.2
 
 ### Fixed documentation
 
