@@ -19,3 +19,9 @@ Including `initialState` property as well as `state` and `setState` arguments of
 Also changed first (and now only) overlay function argument from `name` to `index` which is the element index in `images` array.
 
 ### Removed `spanLastRow` property in favor of `lastRowBehavior`
+
+## 2.0.1
+
+### Fixed documentation
+
+### Removed unused files

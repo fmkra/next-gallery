@@ -1,7 +1,7 @@
 # next-gallery
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)]()
-[![npm version](https://img.shields.io/badge/npm-v2.0.0-brightgreen)](https://www.npmjs.com/package/next-gallery)
+[![npm version](https://img.shields.io/badge/npm-v2.0.1-brightgreen)](https://www.npmjs.com/package/next-gallery)
 
 Next.js component for creating responsive image gallery
 
@@ -97,7 +97,7 @@ Last row always has proportion given by `ratios` property. Images align themselv
 
 Last row fills whole width of the gallery. (This may cause the last row to look disproportionately high)
 
--   `threshold` (default: `0`) - number in range `[0,100]` that determines when the last row should be filled. If last row would take more percent of width than `threshold`, it will be expanded to fill the remaining space. Otherwise it behaves like `preserve`. (`threshold = 0` will always fill the last row, `threshold = 100` is equivalent to `preserve`)
+-   `threshold` (default: `0`) - number in range `[0,1]` that determines when the last row should be filled. If last row would take more percent of width than `threshold`, it will be expanded to fill the remaining space. Otherwise it behaves like `preserve`. (`threshold = 0` will always fill the last row, `threshold = 1` is equivalent to `preserve`)
 
 ### match-previous
 
