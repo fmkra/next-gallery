@@ -31,3 +31,9 @@ Also changed first (and now only) overlay function argument from `name` to `inde
 ### Fixed documentation
 
 In version `2.0.0` property `margin` was renamed to `gap` but documentation was not updated.
+
+## 2.1.0
+
+### Add `nextImageProps` to `Image` type
+
+`Image` type now has additional property `nextImageProps` which allows to pass additional props to nextjs' `Image` component

@@ -45,6 +45,7 @@ More examples in [example](example) directory.
     -   `src` - image source
     -   `aspect_ratio` - image aspect ratio (width / height)
     -   `alt` (default: `""`) - image alt
+    -   `nextImageProps` (default: `{}`) - object with additional props passed to nextjs' `Image` component. See [next/image](https://nextjs.org/docs/api-reference/next/image#props)
 -   `widths` - array of width breakpoints in pixels (e.g. `[400, 800, 1200]`)
 -   `ratios` - array of aspect ratios. Its length has to be one greater than `widths` array (e.g. `[16/9, 32/9, 48/9, 64/9]` along with `widths` above would result in row of proportion at most 16:9 (e.g. one 16:9 image or two 9:16, etc.) for screen widths 0-400px, 32:9 for 400-800px, etc.)
 -   `percentVw` (default: 100) - percent of viewport width that gallery takes (used for image optimization, doesn't change how gallery looks)
