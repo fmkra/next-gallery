@@ -92,6 +92,7 @@ export function Gallery({ widths, gap = '1px', percentVw = 100, overlay, imgLoad
                                         .map((width, i) => `(max-width: ${width}px) ${(percentVw / 100) * size[i]}vw`)
                                         .join(', ') + `, ${(percentVw / 100) * sizes[sizes.length - 1][i]}vw`
                                 }
+                                {...(props.images[i].nextImageProps ?? {})}
                             />
                         </div>
 
