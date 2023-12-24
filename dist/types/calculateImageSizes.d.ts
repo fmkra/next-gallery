@@ -1,7 +1,11 @@
+import Image from 'next/image';
+type NextImageType = typeof Image;
+type NextImageProps = NextImageType extends (props: infer P) => any ? P : never;
 export interface Image {
     src: string;
     aspect_ratio: number;
     alt?: string;
+    nextImageProps?: Partial<NextImageProps>;
 }
 type LastRowBehaviorMatchPrevious = {
     lastRowBehavior?: 'match-previous';
