@@ -25,3 +25,9 @@ Also changed first (and now only) overlay function argument from `name` to `inde
 ### Fixed documentation
 
 ### Removed unused files
+
+## 2.0.3
+
+### Fixed documentation
+
+In version `2.0.0` property `margin` was renamed to `gap` but documentation was not updated.
