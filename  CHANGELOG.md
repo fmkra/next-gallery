@@ -37,3 +37,7 @@ In version `2.0.0` property `margin` was renamed to `gap` but documentation was 
 ### Add `nextImageProps` to `Image` type
 
 `Image` type now has additional property `nextImageProps` which allows to pass additional props to nextjs' `Image` component
+
+## 2.1.1
+
+### Fix invalid size calculation for next Image component
