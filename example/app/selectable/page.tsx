@@ -1,7 +1,6 @@
 'use client'
 
-import React from 'react'
-import { Gallery } from 'next-gallery'
+import { NextGallery } from 'next-gallery'
 import { MyOverlay, OverlayProvider } from './overlay'
 
 const images = [
@@ -14,15 +13,20 @@ const images = [
     { src: 'https://picsum.photos/id/16/1920/1080/', aspect_ratio: 16 / 9 },
 ]
 
+const ratios = [2.2, 4, 6, 8]
+const breakpoints = [500, 1000, 1600]
+
+const overlay = (_: unknown, i: number) => <MyOverlay index={i} />
+
 export default function SelectablePage() {
     return (
         <OverlayProvider>
-            <Gallery
+            <NextGallery
                 images={images}
-                widths={[500, 1000, 1600]}
-                ratios={[2.2, 4, 6, 8]}
+                breakpoints={breakpoints}
+                ratios={ratios}
                 lastRowBehavior="match-previous"
-                overlay={(i) => <MyOverlay index={i} />}
+                overlay={overlay}
             />
         </OverlayProvider>
     )

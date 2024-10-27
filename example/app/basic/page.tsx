@@ -1,5 +1,4 @@
-import React from 'react'
-import { Gallery } from 'next-gallery'
+import { NextGallery } from 'next-gallery'
 
 const images = [
     { src: 'https://picsum.photos/id/1018/1920/1080/', aspect_ratio: 16 / 9 },
@@ -22,13 +21,13 @@ const images = [
     { src: 'https://picsum.photos/id/1029/1920/1080/', aspect_ratio: 16 / 9 },
 ]
 
-const widths = [500, 1000, 1600]
+const breakpoints = [500, 1000, 1600]
 const ratios = [2.2, 4, 6, 8]
 
 export default function BasicPage() {
     return (
         <div className="flex flex-col gap-10">
-            <Gallery {...{ widths, ratios, images }} lastRowBehavior="match-previous" />
+            <NextGallery breakpoints={breakpoints} ratios={ratios} images={images} />
         </div>
     )
 }

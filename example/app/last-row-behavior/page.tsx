@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Gallery } from 'next-gallery'
+import { NextGallery, NextGalleryProps } from 'next-gallery'
 
 const images = [
     { src: 'https://picsum.photos/id/10/1920/1080/', aspect_ratio: 16 / 9 },
@@ -13,7 +13,10 @@ const images = [
     { src: 'https://picsum.photos/id/16/1920/1080/', aspect_ratio: 16 / 9 },
 ]
 
-type LastRowBehavior = 'match-previous' | 'preserve' | 'fill'
+const breakpoints = [500, 1000, 1600]
+const ratios = [2.2, 4, 6, 8]
+
+type LastRowBehavior = Exclude<NextGalleryProps['lastRowBehavior'], undefined>
 
 export default function LastRowBehaviorPage() {
     const [type, setType] = useState<LastRowBehavior>('preserve')
@@ -53,7 +56,7 @@ export default function LastRowBehaviorPage() {
                     />
                 </div>
             )}
-            <Gallery images={images} widths={[500, 1000, 1600]} ratios={[2.2, 4, 6, 8]} {...lastRowBehavior} />
+            <NextGallery images={images} breakpoints={breakpoints} ratios={ratios} {...lastRowBehavior} />
         </div>
     )
 }

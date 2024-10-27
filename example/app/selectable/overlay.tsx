@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from 'react'
 
 type OverlayContextType = {
     selected: boolean[]
-    setSelected: (index: number, value: boolean) => void
+    select: (index: number) => void
 }
 
 const OverlayContext = createContext<OverlayContextType | null>(null)
@@ -19,13 +19,13 @@ const useOverlay = () => {
 
 export const OverlayProvider = ({ children }: { children: React.ReactNode }) => {
     const [selected, setSelected] = useState<boolean[]>([])
-    const editSelected = (index: number, value: boolean) => {
+    const select = (index: number) => {
         const newSelected = [...selected]
-        newSelected[index] = value
+        newSelected[index] = !newSelected[index]
         setSelected(newSelected)
     }
 
-    return <OverlayContext.Provider value={{ selected, setSelected: editSelected }}>{children}</OverlayContext.Provider>
+    return <OverlayContext.Provider value={{ selected, select }}>{children}</OverlayContext.Provider>
 }
 
 export const MyOverlay = ({ index }: { index: number }) => {
@@ -44,7 +44,7 @@ export const MyOverlay = ({ index }: { index: number }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
             }}
-            onClick={() => ovl.setSelected(index, !ovl.selected[index])}
+            onClick={() => ovl.select(index)}
         >
             <svg
                 fill="#fff"
