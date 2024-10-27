@@ -17,7 +17,7 @@ export type NextGalleryProps<ExtraArgs extends NextExtraArgsShape = {}> = Galler
 
 export function NextGallery<ExtraArgs extends NextExtraArgsShape = {}>({
     percentVw = 100,
-    widths,
+    breakpoints,
     imgLoader,
     ...props
 }: NextGalleryProps<ExtraArgs>) {
@@ -29,14 +29,15 @@ export function NextGallery<ExtraArgs extends NextExtraArgsShape = {}>({
                 fill
                 loader={imgLoader}
                 sizes={
-                    widths.map((width, i) => `(max-width: ${width}px) ${(percentVw / 100) * p.sizes[i]}vw`).join(', ') +
-                    `, ${(percentVw / 100) * p.sizes[widths.length]}vw`
+                    breakpoints
+                        .map((breakpoint, i) => `(max-width: ${breakpoint}px) ${(percentVw / 100) * p.sizes[i]}vw`)
+                        .join(', ') + `, ${(percentVw / 100) * p.sizes[breakpoints.length]}vw`
                 }
                 {...p.nextImageProps}
             />
         ),
-        [percentVw, imgLoader, widths]
+        [percentVw, imgLoader, breakpoints]
     )
 
-    return <ReactGallery widths={widths} {...props} render={render} />
+    return <ReactGallery breakpoints={breakpoints} {...props} render={render} />
 }

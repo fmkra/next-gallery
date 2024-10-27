@@ -10,5 +10,5 @@ export type NextGalleryProps<ExtraArgs extends NextExtraArgsShape = {}> = Galler
     percentVw?: number;
     imgLoader?: ImageLoader;
 };
-export declare function NextGallery<ExtraArgs extends NextExtraArgsShape = {}>({ percentVw, widths, imgLoader, ...props }: NextGalleryProps<ExtraArgs>): import("react/jsx-runtime").JSX.Element;
+export declare function NextGallery<ExtraArgs extends NextExtraArgsShape = {}>({ percentVw, breakpoints, imgLoader, ...props }: NextGalleryProps<ExtraArgs>): import("react/jsx-runtime").JSX.Element;
 export {};

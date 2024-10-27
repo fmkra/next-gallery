@@ -23,7 +23,7 @@ const elementStyle = (aspectRatio: number, sizes: number[]) =>
     } as Record<string, any>)
 
 export type GalleryProps<ExtraArgs extends ExtraArgsShape = {}> = GalleryCalculationProps<ExtraArgs> & {
-    widths: number[]
+    breakpoints: number[]
     overlay?: (image: Image<ExtraArgs>, index: number) => React.ReactNode
     gap?: string
 }
@@ -38,16 +38,16 @@ export type ReactGalleryProps<ExtraArgs extends ExtraArgsShape = {}> = GalleryPr
 
 const ReactGalleryInner = <ExtraArgs extends ExtraArgsShape = {}>({
     render,
-    widths,
+    breakpoints,
     gap = '1px',
     overlay,
     ...props
 }: ReactGalleryProps<ExtraArgs>) => {
-    const expectedRatiosLen = widths.length + 1
+    const expectedRatiosLen = breakpoints.length + 1
     if (expectedRatiosLen != props.ratios.length) {
         const shortLong = props.ratios.length < expectedRatiosLen ? 'short' : 'long'
         throw new Error(
-            `'ratios' array is too ${shortLong}. It should have length ${expectedRatiosLen} (because ${widths.length} breakpoints were provided), but has ${props.ratios.length}`
+            `'ratios' array is too ${shortLong}. It should have length ${expectedRatiosLen} (because ${breakpoints.length} breakpoints were provided), but has ${props.ratios.length}`
         )
     }
 
@@ -79,10 +79,10 @@ const ReactGalleryInner = <ExtraArgs extends ExtraArgsShape = {}>({
                     flex-shrink: 0,
                     flex-grow: 1,
                 }` +
-                    widths
+                    breakpoints
                         .map(
-                            (width, i) => `
-                            @media (min-width: ${width}px) {
+                            (breakpoint, i) => `
+                            @media (min-width: ${breakpoint}px) {
                                 .next-gallery__element-${id} {
                                     width: var(--next-gallery-${i + 2});
                                     padding-bottom: calc(var(--next-gallery-${i + 2}) / var(--next-gallery-ar));
