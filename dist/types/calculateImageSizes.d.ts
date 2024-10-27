@@ -1,28 +1,26 @@
-import Image from 'next/image';
-type NextImageType = typeof Image;
-type NextImageProps = NextImageType extends (props: infer P) => any ? P : never;
-export interface Image {
+export type ExtraArgsShape = {
+    extraArgs?: any;
+};
+export type Image<ExtraArgs extends ExtraArgsShape = {}> = {
     src: string;
     aspect_ratio: number;
     alt?: string;
-    nextImageProps?: Partial<NextImageProps>;
-}
-type LastRowBehaviorMatchPrevious = {
+} & ExtraArgs;
+export type LastRowBehaviorMatchPrevious = {
     lastRowBehavior?: 'match-previous';
     shrinkLimit?: number;
     growLimit?: number;
     preferGrowing?: number;
 };
-type LastRowBehaviorPreserve = {
+export type LastRowBehaviorPreserve = {
     lastRowBehavior: 'preserve';
 };
-type LastRowBehaviorFill = {
+export type LastRowBehaviorFill = {
     lastRowBehavior: 'fill';
     threshold?: number;
 };
-export type GalleryCalculationProps = {
+export type GalleryCalculationProps<ExtraArgs extends ExtraArgsShape = {}> = {
     ratios: number[];
-    images: Image[];
+    images: Image<ExtraArgs>[];
 } & (LastRowBehaviorMatchPrevious | LastRowBehaviorPreserve | LastRowBehaviorFill);
-export declare const calculateImageSizes: (arg: GalleryCalculationProps) => readonly [number[][], number[]];
-export {};
+export declare const calculateImageSizes: <ExtraArgs extends ExtraArgsShape = {}>(arg: GalleryCalculationProps<ExtraArgs>) => readonly [number[][], number[]];

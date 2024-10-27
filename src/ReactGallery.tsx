@@ -1,6 +1,12 @@
-import { useId } from 'react'
-import Image, { ImageLoader } from 'next/image'
-import { GalleryCalculationProps, calculateImageSizes } from './calculateImageSizes'
+import { memo, useId, useMemo } from 'react'
+import {
+    ExtraArgsShape,
+    GalleryCalculationProps,
+    Image,
+    LastRowBehaviorFill,
+    LastRowBehaviorMatchPrevious,
+    calculateImageSizes,
+} from './calculateImageSizes'
 
 const containerStyle = {
     display: `flex`,
@@ -16,25 +22,47 @@ const elementStyle = (aspectRatio: number, sizes: number[]) =>
         flexGrow: 1,
     } as Record<string, any>)
 
-export type GalleryProps = GalleryCalculationProps & {
+export type GalleryProps<ExtraArgs extends ExtraArgsShape = {}> = GalleryCalculationProps<ExtraArgs> & {
     widths: number[]
-    overlay?: (index: number) => React.ReactNode
+    overlay?: (image: Image<ExtraArgs>, index: number) => React.ReactNode
     gap?: string
-    percentVw?: number
-    imgLoader?: ImageLoader
 }
 
-export function Gallery({ widths, gap = '1px', percentVw = 100, overlay, imgLoader, ...props }: GalleryProps) {
-    if (widths.length + 1 != props.ratios.length) {
-        const isShorter = props.ratios.length < widths.length + 1
+export type RenderArg<ExtraArgs extends ExtraArgsShape = {}> = Image<ExtraArgs> & {
+    sizes: number[]
+}
+
+export type ReactGalleryProps<ExtraArgs extends ExtraArgsShape = {}> = GalleryProps<ExtraArgs> & {
+    render: (args: RenderArg<ExtraArgs>) => JSX.Element
+}
+
+const ReactGalleryInner = <ExtraArgs extends ExtraArgsShape = {}>({
+    render,
+    widths,
+    gap = '1px',
+    overlay,
+    ...props
+}: ReactGalleryProps<ExtraArgs>) => {
+    const expectedRatiosLen = widths.length + 1
+    if (expectedRatiosLen != props.ratios.length) {
+        const shortLong = props.ratios.length < expectedRatiosLen ? 'short' : 'long'
         throw new Error(
-            `'ratios' array is too ${isShorter ? 'short' : 'long'}. It should have length ${
-                widths.length + 1
-            } (because ${widths.length} breakpoints were provided), but has ${props.ratios.length}`
+            `'ratios' array is too ${shortLong}. It should have length ${expectedRatiosLen} (because ${widths.length} breakpoints were provided), but has ${props.ratios.length}`
         )
     }
 
-    const [sizes, width_left] = calculateImageSizes(props)
+    const [sizes, width_left] = useMemo(
+        () => calculateImageSizes(props),
+        [
+            props.ratios,
+            props.images,
+            props.lastRowBehavior,
+            (props as LastRowBehaviorMatchPrevious)?.shrinkLimit,
+            (props as LastRowBehaviorMatchPrevious)?.growLimit,
+            (props as LastRowBehaviorMatchPrevious)?.preferGrowing,
+            (props as LastRowBehaviorFill)?.threshold,
+        ]
+    )
 
     const id = useId().replace(/:/g, '')
 
@@ -67,11 +95,11 @@ export function Gallery({ widths, gap = '1px', percentVw = 100, overlay, imgLoad
                         .join('')}
             </style>
             <div style={containerStyle}>
-                {sizes.map((size, i) => (
+                {props.images.map((img, i) => (
                     <div
                         className={`next-gallery__element-${id}`}
                         key={i}
-                        style={elementStyle(props.images[i].aspect_ratio, size)}
+                        style={elementStyle(img.aspect_ratio, sizes[i])}
                     >
                         <div
                             style={{
@@ -82,18 +110,10 @@ export function Gallery({ widths, gap = '1px', percentVw = 100, overlay, imgLoad
                                 bottom: gap,
                             }}
                         >
-                            <Image
-                                src={props.images[i].src}
-                                alt={props.images[i].alt ?? ''}
-                                fill
-                                loader={imgLoader}
-                                sizes={
-                                    widths
-                                        .map((width, i) => `(max-width: ${width}px) ${(percentVw / 100) * size[i]}vw`)
-                                        .join(', ') + `, ${(percentVw / 100) * size[widths.length]}vw`
-                                }
-                                {...(props.images[i].nextImageProps ?? {})}
-                            />
+                            {render({
+                                ...img,
+                                sizes: sizes[i],
+                            })}
                         </div>
 
                         {overlay && (
@@ -107,7 +127,7 @@ export function Gallery({ widths, gap = '1px', percentVw = 100, overlay, imgLoad
                                     zIndex: 2,
                                 }}
                             >
-                                {overlay(i)}
+                                {overlay(img, i)}
                             </div>
                         )}
                     </div>
@@ -123,3 +143,4 @@ export function Gallery({ widths, gap = '1px', percentVw = 100, overlay, imgLoad
         </>
     )
 }
+export const ReactGallery = memo(ReactGalleryInner) as typeof ReactGalleryInner

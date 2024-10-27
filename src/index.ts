@@ -1,2 +1,3 @@
-export { Image } from './calculateImageSizes'
-export { Gallery } from './Gallery'
+export { Image, ExtraArgsShape } from './calculateImageSizes'
+export { ReactGallery, ReactGalleryProps, RenderArg } from './ReactGallery'
+export { NextGallery, NextGalleryProps, NextExtraArgsShape } from './NextGallery'

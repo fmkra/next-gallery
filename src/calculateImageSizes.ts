@@ -1,41 +1,37 @@
-import Image from 'next/image'
+export type ExtraArgsShape = { extraArgs?: any }
 
-type NextImageType = typeof Image
-type NextImageProps = NextImageType extends (props: infer P) => any ? P : never
-
-export interface Image {
+export type Image<ExtraArgs extends ExtraArgsShape = {}> = {
     src: string
     aspect_ratio: number
     alt?: string
-    nextImageProps?: Partial<NextImageProps>
-}
+} & ExtraArgs
 
-type LastRowBehaviorMatchPrevious = {
+export type LastRowBehaviorMatchPrevious = {
     lastRowBehavior?: 'match-previous'
     shrinkLimit?: number // default: 0.5, 1 disables shrinking
     growLimit?: number // default: 1.5, 1 disables growing
     preferGrowing?: number // default: 2
 }
 
-type LastRowBehaviorPreserve = {
+export type LastRowBehaviorPreserve = {
     lastRowBehavior: 'preserve'
 }
 
-type LastRowBehaviorFill = {
+export type LastRowBehaviorFill = {
     lastRowBehavior: 'fill'
-    threshold?: number // deafult: 0, above what percentage of last row being filled, it should stretch to the full width of the screen
+    threshold?: number // default: 0, above what percentage of last row being filled, it should stretch to the full width of the screen
 }
 
-export type GalleryCalculationProps = {
+export type GalleryCalculationProps<ExtraArgs extends ExtraArgsShape = {}> = {
     ratios: number[]
-    images: Image[]
+    images: Image<ExtraArgs>[]
 } & (LastRowBehaviorMatchPrevious | LastRowBehaviorPreserve | LastRowBehaviorFill)
 
 function round(number: number) {
     return Math.floor(number * 10000) / 100
 }
 
-export const calculateImageSizes = (arg: GalleryCalculationProps) => {
+export const calculateImageSizes = <ExtraArgs extends ExtraArgsShape = {}>(arg: GalleryCalculationProps<ExtraArgs>) => {
     const sizes: number[][] = Array.from({ length: arg.images.length }, () => [])
     const wl: number[] = []
     for (const desired_ratio of arg.ratios) {
@@ -64,7 +60,7 @@ export const calculateImageSizes = (arg: GalleryCalculationProps) => {
         let last_row_ratio = 0
         const last_row_multipliers: number[] = []
         for (let i = result_width_percent.length; i < arg.images.length; i++) {
-            // last row initialy match the desired_ratio and will be rescaled
+            // last row initially match the desired_ratio and will be rescaled
             const r = round(arg.images[i].aspect_ratio / desired_ratio)
             result_width_percent.push(r)
             last_row_ratio += r
