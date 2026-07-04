@@ -7,3 +7,4 @@ export {
     LastRowBehaviorMatchPrevious,
     LastRowBehaviorPreserve,
 } from './calculateImageSizes'
+export { GalleryProps, ReactGallery, ReactGalleryProps, RenderArg } from './ReactGallery'

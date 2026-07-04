@@ -1,19 +1,28 @@
 {
     "name": "next-gallery",
-    "version": "2.1.1",
-    "description": "Next.js component for creating responsive image gallery",
+    "version": "3.0.0",
+    "description": "Responsive photo gallery layout utilities with optional React and Next.js components",
     "main": "./dist/cjs/index.js",
     "module": "./dist/esm/index.js",
     "types": "./dist/types/index.d.ts",
-    "publishConfig": {
-        "source": "src/index.tsx",
-        "main": "dist/index.js"
-    },
     "exports": {
         ".": {
             "types": "./dist/types/index.d.ts",
             "import": "./dist/esm/index.js",
             "require": "./dist/cjs/index.js"
+        },
+        "./react": {
+            "types": "./dist/types/react.d.ts",
+            "import": "./dist/esm/react.js",
+            "require": "./dist/cjs/react.js"
+        },
+        "./next": {
+            "types": "./dist/types/next.d.ts",
+            "import": "./dist/esm/next.js",
+            "require": "./dist/cjs/next.js"
+        },
+        "./package.json": {
+            "default": "./package.json"
         }
     },
     "files": [
@@ -28,7 +37,9 @@
     "keywords": [
         "nextjs",
         "images",
-        "react"
+        "react",
+        "gallery",
+        "photo-gallery"
     ],
     "author": "Filip Krawczyk <kontakt@fkrawczyk.pl>",
     "license": "MIT",
@@ -38,7 +49,9 @@
     "scripts": {
         "clean": "rm -rf dist",
         "build:types": "tsc --emitDeclarationOnly",
-        "build:js": "rollup -c",
+        "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm",
+        "build:cjs": "tsc -p tsconfig.build.json --module CommonJS --outDir dist/cjs",
+        "build:js": "pnpm run build:esm && pnpm run build:cjs",
         "build": "pnpm run build:js && pnpm run build:types",
         "lint": "eslint --ignore-path .gitignore --fix src",
         "format": "prettier --write src",
@@ -46,39 +59,33 @@
         "example:dev": "cd example && pnpm run dev",
         "example:build": "cd example && pnpm run build"
     },
-    "dependencies": {
-        "@babel/runtime": "^7.17.9",
-        "tslib": "^2.6.2"
-    },
     "peerDependencies": {
         "next": ">= 13.1.1",
-        "react": ">=  17.0.2",
+        "react": ">= 17.0.2",
         "react-dom": ">= 17.0.2"
     },
+    "peerDependenciesMeta": {
+        "next": {
+            "optional": true
+        },
+        "react": {
+            "optional": true
+        },
+        "react-dom": {
+            "optional": true
+        }
+    },
     "devDependencies": {
-        "@babel/plugin-transform-runtime": "^7.21.0",
-        "@babel/preset-env": "^7.21.5",
-        "@babel/preset-react": "^7.18.6",
-        "@babel/preset-typescript": "^7.22.5",
-        "@rollup/plugin-alias": "^5.0.0",
-        "@rollup/plugin-babel": "^6.0.3",
-        "@rollup/plugin-commonjs": "^24.1.0",
-        "@rollup/plugin-node-resolve": "^15.0.2",
-        "@rollup/plugin-terser": "^0.4.0",
-        "@rollup/plugin-typescript": "^11.1.2",
         "@types/node": "^20.4.5",
         "@types/react": "^18.2.17",
         "@types/react-dom": "^18.2.7",
-        "autoprefixer": "^10.4.15",
         "eslint": "^8.39.0",
         "eslint-plugin-react": "^7.32.2",
-        "glob": "^10.3.3",
         "lint-staged": "^13.2.2",
+        "next": "^13.1.1",
         "prettier": "^2.8.8",
-        "rollup": "^3.23.0",
-        "rollup-plugin-analyzer": "^4.0.0",
-        "rollup-plugin-postcss-modules": "^2.1.1",
-        "rollup-plugin-preserve-directives": "^0.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
         "typescript": "^5.1.6"
     },
     "engines": {

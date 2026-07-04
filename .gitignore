@@ -1,4 +1,6 @@
 node_modules
 .next
+.DS_Store
+.pnpm-store/
 package-lock.json
 src/**/*.css.d.ts

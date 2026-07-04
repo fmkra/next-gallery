@@ -1,13 +1,11 @@
-import Image, { ImageLoader } from 'next/image'
-import { GalleryProps, RenderArg, ReactGallery } from './ReactGallery'
+import Image from 'next/image'
+import type { ImageLoader, ImageProps } from 'next/image'
 import { useCallback } from 'react'
 import { ExtraArgsShape } from './calculateImageSizes'
-
-type NextImageType = typeof Image
-type NextImageProps = NextImageType extends (props: infer P) => any ? P : never
+import { GalleryProps, ReactGallery, RenderArg } from './ReactGallery'
 
 export type NextExtraArgsShape = ExtraArgsShape & {
-    nextImageProps?: Partial<NextImageProps>
+    nextImageProps?: Partial<ImageProps>
 }
 
 export type NextGalleryProps<ExtraArgs extends NextExtraArgsShape = {}> = GalleryProps<ExtraArgs> & {

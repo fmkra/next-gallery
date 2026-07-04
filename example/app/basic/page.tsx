@@ -1,4 +1,4 @@
-import { NextGallery } from 'next-gallery'
+import { NextGallery } from 'next-gallery/next'
 
 const images = [
     { src: 'https://picsum.photos/id/1018/1920/1080/', aspect_ratio: 16 / 9 },

@@ -1,2 +1,2 @@
-export{ReactGallery}from"./ReactGallery.js";export{NextGallery}from"./NextGallery.js";
+export { calculateImageSizes, } from './calculateImageSizes';
 //# sourceMappingURL=index.js.map

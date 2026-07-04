@@ -44,6 +44,14 @@ In version `2.0.0` property `margin` was renamed to `gap` but documentation was 
 
 ## 3.0.0
 
+### Split package into base, React, and Next.js entry points
+
+The root `next-gallery` entry point now exports only the dependency-free layout calculation API.
+
+React components are exported from `next-gallery/react`.
+
+Next.js components are exported from `next-gallery/next`.
+
 ### Rename `Gallery` to `NextGallery`
 
 ### Rename `widths` prop to `breakpoints`

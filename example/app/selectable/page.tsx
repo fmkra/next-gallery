@@ -1,6 +1,6 @@
 'use client'
 
-import { NextGallery } from 'next-gallery'
+import { NextGallery } from 'next-gallery/next'
 import { MyOverlay, OverlayProvider } from './overlay'
 
 const images = [

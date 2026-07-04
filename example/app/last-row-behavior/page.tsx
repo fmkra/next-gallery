@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { NextGallery, NextGalleryProps } from 'next-gallery'
+import { NextGallery, NextGalleryProps } from 'next-gallery/next'
 
 const images = [
     { src: 'https://picsum.photos/id/10/1920/1080/', aspect_ratio: 16 / 9 },

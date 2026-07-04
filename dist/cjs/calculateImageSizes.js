@@ -1,2 +1,102 @@
-"use strict";function t(t){return Math.floor(1e4*t)/100}exports.calculateImageSizes=e=>{var o,s,l,i;const a=Array.from({length:e.images.length},(()=>[])),n=[];for(const r of e.ratios){let h=0,c=[],f=0;for(let o=0;o<e.images.length;o++)if(h+e.images[o].aspect_ratio<=r)h+=e.images[o].aspect_ratio;else{f=c.length;for(let s=c.length;s<o;s++){const o=t(e.images[s].aspect_ratio/h);c.push(o)}h=e.images[o].aspect_ratio}const g=c.slice(f);for(let t=1;t<g.length;t++)g[t]+=g[t-1];g.push(100);let u=0;const p=c.length;let m=0;const v=[];for(let o=c.length;o<e.images.length;o++){const s=t(e.images[o].aspect_ratio/r);for(c.push(s),m+=s;g[u]<m;)u++;v.push(g[u]/m),u>0&&v.push(g[u-1]/m)}if("fill"==e.lastRowBehavior){const t=r/h;if(1>=t*(null!==(o=e.threshold)&&void 0!==o?o:0))for(let e=p;e<c.length;e++)c[e]*=t}else if("match-previous"==e.lastRowBehavior||void 0===e.lastRowBehavior){const t=null!==(s=e.growLimit)&&void 0!==s?s:1.5,o=null!==(l=e.shrinkLimit)&&void 0!==l?l:.5,a=null!==(i=e.preferGrowing)&&void 0!==i?i:2;v.push(100/m);let n=1,r=1/0;for(const e of v)if(e>=1){const o=e;if(e>t)continue;Math.abs(o)<Math.abs(r)&&(n=e,r=o)}else{const t=a/e;if(e<o)continue;Math.abs(t)<Math.abs(r)&&(n=e,r=t)}for(let t=p;t<c.length;t++)c[t]*=n}let d=100;for(let t=p;t<c.length;t++)d-=c[t];for(const t in c)a[t].push(c[t]);n.push(d)}return[a,n]};
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.calculateImageSizes = void 0;
+function round(number) {
+    return Math.floor(number * 10000) / 100;
+}
+const calculateImageSizes = (arg) => {
+    var _a, _b, _c, _d;
+    const sizes = Array.from({ length: arg.images.length }, () => []);
+    const wl = [];
+    for (const desired_ratio of arg.ratios) {
+        let current_ratio = 0;
+        let result_width_percent = [];
+        let second_last_row_start = 0;
+        for (let i = 0; i < arg.images.length; i++) {
+            if (current_ratio + arg.images[i].aspect_ratio <= desired_ratio) {
+                current_ratio += arg.images[i].aspect_ratio;
+            }
+            else {
+                second_last_row_start = result_width_percent.length;
+                const start_index = result_width_percent.length;
+                for (let j = start_index; j < i; j++) {
+                    const rounded = round(arg.images[j].aspect_ratio / current_ratio);
+                    result_width_percent.push(rounded);
+                }
+                current_ratio = arg.images[i].aspect_ratio;
+            }
+        }
+        const second_last_row = result_width_percent.slice(second_last_row_start);
+        for (let i = 1; i < second_last_row.length; i++)
+            second_last_row[i] += second_last_row[i - 1];
+        second_last_row.push(100);
+        let second_last_row_i = 0;
+        const last_row_start = result_width_percent.length;
+        let last_row_ratio = 0;
+        const last_row_multipliers = [];
+        for (let i = result_width_percent.length; i < arg.images.length; i++) {
+            // last row initially match the desired_ratio and will be rescaled
+            const r = round(arg.images[i].aspect_ratio / desired_ratio);
+            result_width_percent.push(r);
+            last_row_ratio += r;
+            while (second_last_row[second_last_row_i] < last_row_ratio)
+                second_last_row_i++;
+            last_row_multipliers.push(second_last_row[second_last_row_i] / last_row_ratio);
+            if (second_last_row_i > 0) {
+                last_row_multipliers.push(second_last_row[second_last_row_i - 1] / last_row_ratio);
+            }
+        }
+        if (arg.lastRowBehavior == 'fill') {
+            const multiplier = desired_ratio / current_ratio;
+            if (1 >= multiplier * ((_a = arg.threshold) !== null && _a !== void 0 ? _a : 0)) {
+                for (let i = last_row_start; i < result_width_percent.length; i++) {
+                    result_width_percent[i] *= multiplier;
+                }
+            }
+        }
+        else if (arg.lastRowBehavior == 'match-previous' || arg.lastRowBehavior === undefined) {
+            // calculate the best multiplier for the last row
+            const growLimit = (_b = arg.growLimit) !== null && _b !== void 0 ? _b : 1.5;
+            const shrinkLimit = (_c = arg.shrinkLimit) !== null && _c !== void 0 ? _c : 0.5;
+            const preferGrowing = (_d = arg.preferGrowing) !== null && _d !== void 0 ? _d : 2;
+            // in the worst case we will just fill the whole width with the last row
+            last_row_multipliers.push(100 / last_row_ratio);
+            let best_multiplier = 1;
+            let best_fitness = Infinity;
+            for (const m of last_row_multipliers) {
+                if (m >= 1) {
+                    const m_fitness = m;
+                    if (m > growLimit)
+                        continue;
+                    if (Math.abs(m_fitness) < Math.abs(best_fitness)) {
+                        best_multiplier = m;
+                        best_fitness = m_fitness;
+                    }
+                }
+                else {
+                    const m_fitness = preferGrowing / m;
+                    if (m < shrinkLimit)
+                        continue;
+                    if (Math.abs(m_fitness) < Math.abs(best_fitness)) {
+                        best_multiplier = m;
+                        best_fitness = m_fitness;
+                    }
+                }
+            }
+            for (let i = last_row_start; i < result_width_percent.length; i++) {
+                result_width_percent[i] *= best_multiplier;
+            }
+        }
+        let width_left = 100;
+        for (let i = last_row_start; i < result_width_percent.length; i++) {
+            width_left -= result_width_percent[i];
+        }
+        for (const i in result_width_percent) {
+            sizes[i].push(result_width_percent[i]);
+        }
+        wl.push(width_left);
+    }
+    return [sizes, wl];
+};
+exports.calculateImageSizes = calculateImageSizes;
 //# sourceMappingURL=calculateImageSizes.js.map
