@@ -127,4 +127,8 @@ The last row tries to align with the previous row so some image edges line up.
 - `growLimit` - number in range `[1, Infinity]` that controls how much the last row can grow. Defaults to `1.5`.
 - `preferGrowing` - how much growing is preferred over shrinking. Defaults to `2`.
 
-More examples are available in the `example` and `example-react` directories.
+More examples are available in:
+
+- `examples/plain` for the dependency-free calculation API.
+- `examples/react` for the React component.
+- `examples/nextjs` for the Next.js component.

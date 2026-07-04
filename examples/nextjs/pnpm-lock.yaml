@@ -30,8 +30,8 @@ importers:
         specifier: 13.4.18
         version: 13.4.18(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       next-gallery:
-        specifier: link:..
-        version: link:..
+        specifier: link:../..
+        version: link:../..
       postcss:
         specifier: 8.4.28
         version: 8.4.28

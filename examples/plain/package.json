@@ -1,0 +1,11 @@
+{
+  "name": "next-gallery-example-plain",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "next-gallery": "link:../.."
+  }
+}
